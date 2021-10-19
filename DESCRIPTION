@@ -8,3 +8,6 @@ StagedInstall: no
 Imports:
     jsonlite,
     Rcpp
+LinkingTo: 
+    Rcpp
+
