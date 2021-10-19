@@ -40,7 +40,7 @@ library(ADinR)
 #load the adinr module
 adinr<-Rcpp::Module("adinr", PACKAGE="ADinR")
 
-#Simple linear model example
+#Simple linear modeling example 
 
 #some data
 nobs<-10.0
@@ -57,13 +57,9 @@ b$set_value(2.1)
 #declaring a variable
 norm2<-adinr$variable()
 
-#regression
-predicted <- c(1:length(x)) 
 for(i in 1:10){
-  pred_Y<- a*x[i]+b
-  predicted[[i]]<-pred_Y$value()
-  print(predicted[[i]])
-  norm2<-norm2 + pow(y[i]-pred_Y,2.0)
+  pred_y<- a*x[i]+b
+  norm2<-norm2 + pow(y[i]-pred_y,2.0)
 }
 
 #likelihood
