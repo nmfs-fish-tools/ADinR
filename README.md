@@ -15,7 +15,6 @@ install.packages("remotes")
 remotes::install_github("nmfs-fish-tools/ADinR")
 library(ADinR)
 
-adinr<-Rcpp::Module("adinr", PACKAGE="ADinR")
 ```
 
 **Windows users**: Please ensure you have [Rtools](https://cran.r-project.org/bin/windows/Rtools/). If you receive errors related to C++ when loading ADinR, it could be because your R installation uses the default Makevars.win file. To update your Makevars.win file, please run the following code in your R terminal:
@@ -33,6 +32,71 @@ cat("\nCXX14FLAGS=-O3 -Wno-unused-variable -Wno-unused-function",
     file = M, sep = "\n", append = TRUE)
 ```
 To get notifications about `ADinR`, you can watch this GitHub project.
+
+## Example
+```r
+library(ADinR)
+
+#load the adinr module
+adinr<-Rcpp::Module("adinr", PACKAGE="ADinR")
+
+#Simple linear model example
+
+#some data
+nobs<-10.0
+x<-c(-1.0, 0.00,  1.0,  2.0,  3.0,  4.0,  5.0,  6.0,  7.0,  8.0)
+y<-c(1.4,  4.7,  5.1,  8.3,  9.0,  14.5,  14.0,  13.4,  19.2,  18.0)
+
+#estimated parameters
+a<-adinr$parameter()
+a$set_value(1.0)
+b<-adinr$parameter()
+b$set_value(2.1)
+
+#declaring a variable
+norm2<-adinr$variable()
+
+#regression
+predicted <- c(1:length(x)) 
+for(i in 1:10){
+  pred_Y<- a*x[i]+b
+  predicted[[i]]<-pred_Y$value()
+  print(predicted[[i]])
+  norm2<-norm2 + pow(y[i]-pred_Y,2.0)
+}
+
+#likelihood
+f<-(nobs/2.0) * log(norm2) 
+
+
+
+#minimize the objective function
+results<-adinr$minimize()
+
+results
+
+```
+### Output:
+$converged
+[1] TRUE
+
+$iterations
+[1] 10
+
+$`runtime (seconds)`
+[1] 6.8e-05
+
+$`function value`
+[1] 14.96419
+
+$`max gradient component`
+[1] 2.525271e-06
+
+$gradient
+[1] -1.045741e-06 -2.525271e-06
+
+$`parameter values`
+[1] 1.909091 4.078181
 
 ## Disclaimer
 
