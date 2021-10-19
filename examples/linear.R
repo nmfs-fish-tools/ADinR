@@ -2,6 +2,7 @@ library(Rcpp)
 library(nloptr)
 library(ADinR)
 
+adinr<-Rcpp::Module("adinr", PACKAGE="ADinR")
 
 nobs<-10.0
 x<-c(-1.0, 0.00,  1.0,  2.0,  3.0,  4.0,  5.0,  6.0,  7.0,  8.0)
