@@ -13,7 +13,9 @@ Please install and load `ADinR` from Github using the `remotes` package as follo
 ```r
 install.packages("remotes")
 remotes::install_github("nmfs-fish-tools/ADinR")
-library(r4MAS)
+library(ADinR)
+
+adinr<-Rcpp::Module("adinr", PACKAGE="ADinR")
 ```
 
 **Windows users**: Please ensure you have [Rtools](https://cran.r-project.org/bin/windows/Rtools/). If you receive errors related to C++ when loading ADinR, it could be because your R installation uses the default Makevars.win file. To update your Makevars.win file, please run the following code in your R terminal:
