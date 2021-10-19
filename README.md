@@ -1,6 +1,6 @@
 # ADinR - Automatic Differentiation in R
 
-Automatic Differentiation in R (ADinR) uses a fast, static taped reverse-mode  AD modeling system for finding solutions to non-linear statistical modeling and optimization problems. 
+Automatic Differentiation in R (ADinR) uses a fast, staticly taped reverse-mode  AD modeling system for finding solutions to non-linear statistical modeling and optimization problems. 
 
 # Getting started
 
