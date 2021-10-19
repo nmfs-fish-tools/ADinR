@@ -1,2 +1,5 @@
 Package: ADinR
 Type: Package
+Imports:
+    jsonlite,
+    Rcpp
