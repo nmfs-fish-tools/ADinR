@@ -50,6 +50,7 @@ y<-c(1.4,  4.7,  5.1,  8.3,  9.0,  14.5,  14.0,  13.4,  19.2,  18.0)
 #estimated parameters
 a<-adinr$parameter()
 a$set_value(1.0)
+
 b<-adinr$parameter()
 b$set_value(2.1)
 
