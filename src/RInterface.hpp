@@ -304,7 +304,7 @@ bool line_search(
 
             if (nx[j] != nx[j]) {
                 
-                std::cout<<j<< " "<<ls<<" "<<x[j]<< " "<<step <<" " <<z[j]<<"\n";
+//                std::cout<<j<< " "<<ls<<" "<<x[j]<< " "<<step <<" " <<z[j]<<"\n";
                 
             }
             variable::tape_g.independent_variables[j]->update_value(nx[j]);
