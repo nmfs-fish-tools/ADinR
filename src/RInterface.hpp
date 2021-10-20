@@ -42,6 +42,10 @@ variable make_variable() {
     return v;
 }
 
+void show(const variable& v){
+    std::cout<<variable.value()<<std::endl;
+}
+
 Rcpp::NumericVector gradient(Rcpp::NumericVector x) {
     Rcpp::NumericVector ret(variable::tape_g.independent_variables.size());
     if (x.size() != ret.size()) {
@@ -617,6 +621,7 @@ RCPP_MODULE(adinr) {
     function("parameter_values", &get_values, "returns a vector of parameter values");
     function("clear", &clear, "clears the tape of entries and independent variables");
     function("minimize", &lbfgs, "minimizes the objective function using l-bfgs");
+    function("show", &show);
 }
 
 #endif /* RINTERFACE_HPP */
