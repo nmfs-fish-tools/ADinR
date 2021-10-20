@@ -23,19 +23,19 @@ nobs<-length(y)
 
 x0<-adinr$parameter()
 x0$set_value(2.5)
-#x0$bounds(0,100)
+x0$bounds(0.1,100)
 
 x1<-adinr$parameter()
 x1$set_value(3.9)
-#x1$bounds(0,100)
+x1$bounds(0.1,100)
 
 x2<-adinr$parameter()
 x2$set_value(4.15)
-#x2$bounds(0,100)
+x2$bounds(0.1,100)
 
 x3<-adinr$parameter()
 x3$set_value(3.9)
-#x3$bounds(0,100)
+x3$bounds(0.1,100)
 
 #objective function
 norm2<-adinr$variable()
@@ -43,7 +43,9 @@ norm2<-adinr$variable()
 
 for(i in 1:nobs){
   pred_Y<- x0 * (pow(u[[i]],2) + x1 * u[[i]]) / (pow(u[[i]],2) + x2* u[[i]] + x3)
+ 
   norm2<-norm2 + pow(y[i]-pred_Y,2.0)
+  print(norm2$value())
 }
 
 f<-norm2
