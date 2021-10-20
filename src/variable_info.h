@@ -32,8 +32,68 @@
 #ifndef VARIABLE_INFO_H
 #define VARIABLE_INFO_H
 
+
+
+struct transformation{
+    
+    /**
+            * Convert the external value to its internal representation.
+            *
+            * @param val
+            * @param min
+            * @param max
+            * @return
+            */
+           virtual double external_2_internal(REAL_T val, REAL_T min_, REAL_T max_) const = 0;
+           /**
+            * Convert a variables internal value to its external representation.
+            * @param val
+            * @param min
+            * @param max
+            * @return
+            */
+           virtual double internal_2_external(REAL_T val, REAL_T min_, REAL_T max_) const = 0;
+           /**
+            * The derivative of internal 2 external.
+            * @param val
+            * @param min
+            * @param max
+            * @return
+            */
+           virtual double derivative_internal_2_external(REAL_T val, REAL_T min_, REAL_T max_) const = 0;
+}
+
+struct logit_transformation : public transformation{
+    
+    
+    virtual double external_2_internal(REAL_T val, REAL_T min_, REAL_T max_)const {
+            if (val == min_) {
+                val += static_cast<REAL_T>(1e-8);
+            } else if (val == max_) {
+                val -= static_cast<REAL_T>(1e-8);
+            }
+
+            REAL_T p = ((val) - min_) / (max_ - min_);
+            return std::log(p / (1.0 - p));
+        }
+
+        virtual double internal_2_external(REAL_T val, REAL_T min_, REAL_T max_) const {
+            REAL_T p = std::exp(val) / (1.0 + std::exp(val));
+            return p * (max_ - min_) + min_;
+        }
+
+        virtual double derivative_internal_2_external(REAL_T val, REAL_T min_, REAL_T max_)const {
+            return (std::exp(val) * std::log(M_E)*(max_ - min_)) / (std::exp(val) + 1.0)-
+                    (std::exp(static_cast<REAL_T> (2.0 * val)) * std::log(M_E)*(max_ - min_)) / std::pow((std::exp(val) + 1), 2.0);
+        }
+}
+
+
+
+
 struct variable_info {
     static size_t id_g;
+    static transformation* transformation;
     size_t id;
     double value;
     double minb;
@@ -46,20 +106,31 @@ struct variable_info {
     }
 
     double internal_value() {
-        return this->value;
+        if (this->is_bound) {
+            return this->transformation->external_2_internal(this->value, this->minb, this->maxb);
+        } else {
+            return this->GetValue();
+        }
     }
 
     double get_scaled_gradient(double g) {
-        return g;
-
+        if (this->is_bound) {
+            return this->transformation->derivative_internal_2_external(this->value, this->minb, this->maxb);
+        } else {
+            return 1;
+        }
     }
     
     void update_value(double v) {
-        this->value = v;
+        if (this->is_bound) {
+            this->value = (variable_info::transformation->internal_2_external(v, this->minb, this->maxb));
+
+        } else {
+            this->value = v;
+        }
     }
 };
-
-//    template<typename T>
+variable::transformation = new logit_transformation();
 size_t variable_info::id_g = 0;
 
 

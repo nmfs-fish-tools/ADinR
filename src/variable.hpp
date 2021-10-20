@@ -40,7 +40,8 @@ class variable {
 public:
     static tape tape_g;
     std::shared_ptr<variable_info > info = NULL; //std::make_shared<variable_info >();
-
+    
+    
     variable(double value = 0.0)
     : info(std::make_shared<variable_info >()) {
         info->value = value;
