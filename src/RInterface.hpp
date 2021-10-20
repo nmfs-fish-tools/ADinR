@@ -42,7 +42,7 @@ variable make_variable() {
     return v;
 }
 
-void show(variable& v){
+void show(const variable& v){
     std::cout<<v.value()<<std::endl;
 }
 
