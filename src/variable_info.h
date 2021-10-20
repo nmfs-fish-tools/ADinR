@@ -61,7 +61,7 @@ struct transformation{
             * @return
             */
            virtual double derivative_internal_2_external(double val, double min_, double max_) const = 0;
-}
+};
 
 struct logit_transformation : public transformation{
     
@@ -84,9 +84,9 @@ struct logit_transformation : public transformation{
 
         virtual double derivative_internal_2_external(double val, double min_, double max_)const {
             return (std::exp(val) * std::log(M_E)*(max_ - min_)) / (std::exp(val) + 1.0)-
-                    (std::exp(static_cast<REAL_T> (2.0 * val)) * std::log(M_E)*(max_ - min_)) / std::pow((std::exp(val) + 1), 2.0);
+                    (std::exp(static_cast<double> (2.0 * val)) * std::log(M_E)*(max_ - min_)) / std::pow((std::exp(val) + 1), 2.0);
         }
-}
+};
 
 
 
