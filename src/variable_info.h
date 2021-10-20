@@ -109,7 +109,7 @@ struct variable_info {
         if (this->is_bound) {
             return this->transformation->external_2_internal(this->value, this->minb, this->maxb);
         } else {
-            return this->GetValue();
+            return this->value;
         }
     }
 
