@@ -43,7 +43,7 @@ variable make_variable() {
 }
 
 void show(const variable& v){
-    std::cout<<variable.value()<<std::endl;
+    std::cout<<v.value()<<std::endl;
 }
 
 Rcpp::NumericVector gradient(Rcpp::NumericVector x) {
