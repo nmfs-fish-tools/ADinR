@@ -140,6 +140,7 @@ struct variable_info {
     
     void update_value(double v) {
         if (this->is_bound) {
+            std::cout<<"updating "<<v<<"\n";
             this->value = (variable_info::transformation->internal_2_external(v, this->minb, this->maxb));
             
         } else {
