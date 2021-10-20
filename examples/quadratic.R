@@ -2,9 +2,10 @@ library(Rcpp)
 library(nloptr)
 library(ADinR)
 
+#load the adinr module
 adinr<-Rcpp::Module("adinr", PACKAGE="ADinR")
 
-
+#data
 x<-c(-1.1,-0.5,0.1,0.7,1.3,1.9,2.5,3.1,3.7,4.3,4.9,5.5,6.1,
 6.7,7.3,7.9,8.5,9.1,9.7,10.3,10.9,11.5,12.1,12.7,13.3,13.9,
 14.5,15.1,15.7,16.3,16.9,17.5,18.1,18.7,19.3,19.9)
@@ -18,11 +19,13 @@ y<-c(5.29386, 6.26918, 5.13497, 4.94116, 14.0049, 24.4162,
 
 nobs<-length(x)
 
+#independent parameters
 b0<-adinr$parameter()
 b1<-adinr$parameter()
 b2<-adinr$parameter()
 
 
+#objective function
 norm2<-adinr$variable()
 
 predicted <- c(1:length(x))
@@ -35,7 +38,7 @@ f<-(nobs/2.0) * log(norm2)
 
 
 
-
+#minimize the objective function
 results<-adinr$minimize()
 
 results
