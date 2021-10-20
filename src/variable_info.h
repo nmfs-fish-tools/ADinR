@@ -92,7 +92,6 @@ struct sine_transformation : public variable_transformation{
     
     
     virtual double external_2_internal(double val, double min_, double max_)const {
-        std::cout<<"val = "<<val<<"\n";
         return std::asin((2.0 * (val - min_) / (max_ - min_)) - 1.0);
     }
     
