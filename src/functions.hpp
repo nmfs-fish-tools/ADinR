@@ -202,7 +202,7 @@ const variable operator+(const variable& left,
                          const variable& right) {
     
     variable dependent;
-    ret.info->value = left.info->value + right.info->value;
+    dependent.info->value = left.info->value + right.info->value;
     
     if(variable::tape_g.recording){
         std::shared_ptr<addvv_operator > ret = std::make_shared<addvv_operator >();
