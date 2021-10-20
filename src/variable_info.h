@@ -34,7 +34,7 @@
 
 
 
-struct transformation{
+struct variable_transformation{
     
     /**
             * Convert the external value to its internal representation.
@@ -63,7 +63,7 @@ struct transformation{
            virtual double derivative_internal_2_external(double val, double min_, double max_) const = 0;
 };
 
-struct logit_transformation : public transformation{
+struct logit_transformation : public variable_transformation{
     
     
     virtual double external_2_internal(double val, double min_, double max_)const {
@@ -93,7 +93,7 @@ struct logit_transformation : public transformation{
 
 struct variable_info {
     static size_t id_g;
-    static transformation* transformation;
+    static variable_transformation* transformation;
     size_t id;
     double value;
     double minb;
@@ -130,7 +130,7 @@ struct variable_info {
         }
     }
 };
-transformation variable_info::transformation = new logit_transformation();
+variable_transformation* variable_info::transformation = new logit_transformation();
 size_t variable_info::id_g = 0;
 
 
