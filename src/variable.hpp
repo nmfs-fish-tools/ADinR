@@ -86,7 +86,7 @@ public:
     }
 
     void update(double v) {
-        this->info->value = v;
+        this->info->update_value(v);
     }
 
  
