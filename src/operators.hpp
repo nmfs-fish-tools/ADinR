@@ -250,7 +250,7 @@
         }
 
         virtual void update() {
-            this->dependent->value = std::tanh(this->x->value);
+            this->dependent->value = std::exp(this->x->value);
         }
 
         virtual void first_order(std::vector<double>& derivatives) {
