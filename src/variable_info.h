@@ -66,19 +66,19 @@ struct transformation{
 struct logit_transformation : public transformation{
     
     
-    virtual double external_2_internal(double val,  min_, double max_)const {
+    virtual double external_2_internal(double val, double min_, double max_)const {
             if (val == min_) {
                 val += static_cast<double>(1e-8);
             } else if (val == max_) {
                 val -= static_cast<double>(1e-8);
             }
 
-            REAL_T p = ((val) - min_) / (max_ - min_);
+            double p = ((val) - min_) / (max_ - min_);
             return std::log(p / (1.0 - p));
         }
 
         virtual double internal_2_external(double val, double min_, double max_) const {
-            REAL_T p = std::exp(val) / (1.0 + std::exp(val));
+            double p = std::exp(val) / (1.0 + std::exp(val));
             return p * (max_ - min_) + min_;
         }
 
