@@ -70,7 +70,7 @@ double gradient_maxgc(const std::vector<double>& x, std::vector<double>& gradien
         std::cout << "Error in gradient function: x vector size not equal to independent variable size.\n";
     } else {
         for (int i = 0; i < variable::tape_g.independent_variables.size(); i++) {
-            variable::tape_g.independent_variables[i]->value = x[i];
+            variable::tape_g.independent_variables[i]->update_value(x[i]);
         }
         variable::tape_g.forward();
         variable::tape_g.reverse();
@@ -96,7 +96,7 @@ double gradient_maxgc(const std::valarray<double>& x, std::valarray<double>& gra
     } else {
 
         for (int i = 0; i < variable::tape_g.independent_variables.size(); i++) {
-            variable::tape_g.independent_variables[i]->value = x[i];
+            variable::tape_g.independent_variables[i]->update_value(x[i]);
         }
 
         variable::tape_g.forward();
@@ -137,7 +137,7 @@ double internal_evaluate(std::vector<double>& x) {
         return 0.0;
     } else {
         for (int i = 0; i < variable::tape_g.independent_variables.size(); i++) {
-            variable::tape_g.independent_variables[i]->value = x[i];
+            variable::tape_g.independent_variables[i]->update_value(x[i]);
         }
 
         variable::tape_g.forward();
@@ -153,7 +153,7 @@ double internal_evaluate(std::valarray<double>& x) {
         return 0.0;
     } else {
         for (int i = 0; i < variable::tape_g.independent_variables.size(); i++) {
-            variable::tape_g.independent_variables[i]->value = x[i];
+            variable::tape_g.independent_variables[i]->update_value(x[i]);
         }
 
         variable::tape_g.forward();
@@ -304,7 +304,7 @@ bool line_search(
 
             if (nx[j] != nx[j]) {
                 
-                std::cout<<j<< " "<<ls<<" "<<x[j]<< " "<<step <<" " <<z[j]<<"\n";
+//                std::cout<<j<< " "<<ls<<" "<<x[j]<< " "<<step <<" " <<z[j]<<"\n";
                 
             }
             variable::tape_g.independent_variables[j]->update_value(nx[j]);
