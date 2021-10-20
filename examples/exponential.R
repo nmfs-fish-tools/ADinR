@@ -31,7 +31,6 @@ norm2<-adinr$variable()
 predicted <- c(1:length(x))
 for(i in 1:nobs){
   pred_Y<- a * exp(k * x[i])
-  predicted[i] = pred_Y$value()
   norm2<-norm2 + pow(y[i]-pred_Y,2.0)
 }
 
