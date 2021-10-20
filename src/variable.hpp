@@ -69,6 +69,10 @@ public:
     const double value() {
         return this->info->value;
     }
+    
+    double value() {
+        return this->info->value;
+    }
 
     void set_value(double v) {
         this->info->value = v;
