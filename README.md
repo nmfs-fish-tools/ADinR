@@ -96,7 +96,7 @@ $gradient
 $`parameter values`
 [1] 1.909091 4.078181
 ```
-### Reference
+#### Reference
 Fournier, D.A., H.J. Skaug, J. Ancheta, J. Ianelli, A. Magnusson, M.N. Maunder, A. Nielsen, and J. Sibert. 2012. AD Model Builder: using automatic differentiation for statistical inference of highly parameterized complex nonlinear models. Optim. Methods Softw. 27:233-249.
 ## Disclaimer
 
