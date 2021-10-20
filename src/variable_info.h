@@ -113,9 +113,9 @@ struct variable_info {
         }
     }
 
-    double get_scaled_gradient(double g) {
+    double get_scaled_gradient(double x) {
         if (this->is_bound) {
-            return this->transformation->derivative_internal_2_external(this->value, this->minb, this->maxb);
+            return this->transformation->derivative_internal_2_external(x, this->minb, this->maxb);
         } else {
             return 1;
         }
