@@ -146,7 +146,7 @@ struct variable_info {
         }
     }
 };
-variable_transformation* variable_info::transformation = new sine_transformation();
+variable_transformation* variable_info::transformation = new logit_transformation();
 size_t variable_info::id_g = 0;
 
 
