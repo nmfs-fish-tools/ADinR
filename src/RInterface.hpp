@@ -454,7 +454,7 @@ Rcpp::List lbfgs(Rcpp::Nullable<Rcpp::List> control = R_NilValue) {
             std::chrono::duration<double> elapsed_seconds = end - start;
             for (size_t j = 0; j < nops; j++) {
                 rgrad[j] = gradient[j];
-                rx[j] = x[j];
+                rx[j] = variable::tape_g.independent_variables[j]->value;
             }
             results["converged"] = true;
             results["iterations"] = iteration;
@@ -526,7 +526,7 @@ Rcpp::List lbfgs(Rcpp::Nullable<Rcpp::List> control = R_NilValue) {
             std::chrono::duration<double> elapsed_seconds = end - start;
             for (size_t j = 0; j < nops; j++) {
                 rgrad[j] = gradient[j];
-                rx[j] = x[j];
+                rx[j] = variable::tape_g.independent_variables[j]->value;
             }
             results["converged"] = false;
             results["iterations"] = iteration;
@@ -545,7 +545,7 @@ Rcpp::List lbfgs(Rcpp::Nullable<Rcpp::List> control = R_NilValue) {
             std::chrono::duration<double> elapsed_seconds = end - start;
             for (size_t j = 0; j < nops; j++) {
                 rgrad[j] = gradient[j];
-                rx[j] = x[j];
+                rx[j] = variable::tape_g.independent_variables[j]->value;
             }
             results["converged"] = false;
             results["iterations"] = iteration;
@@ -565,7 +565,7 @@ Rcpp::List lbfgs(Rcpp::Nullable<Rcpp::List> control = R_NilValue) {
     std::chrono::duration<double> elapsed_seconds = end - start;
     for (size_t j = 0; j < nops; j++) {
         rgrad[j] = gradient[j];
-        rx[j] = x[j];
+        rx[j] = variable::tape_g.independent_variables[j]->value;
     }
 
     results["converged"] = false;
