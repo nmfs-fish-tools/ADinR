@@ -20,12 +20,13 @@
 
 variable ad_acos(variable x) {
     variable dependent;
-    ret->dependent = dependent.info;
+    dependent.info->value = std::acos(x.info->value);
+
     
     if(variable::tape_g.recording){
         std::shared_ptr<acos_operator > ret = std::make_shared<acos_operator >();
         ret->x = x.info;
-        dependent.info->value = std::acos(x.info->value);
+        ret->dependent = dependent.info;
         variable::tape_g.stack.push_back(ret);
     }
     
