@@ -255,7 +255,7 @@
 
         virtual void first_order(std::vector<double>& derivatives) {
             double w = derivatives[this->dependent->id];
-            double adjoint = std::exp(this->x->value) * std::log(this->x->value);
+            double adjoint = std::exp(this->x->value);
             derivatives[this->x->id] += w*adjoint;
         }
     };
