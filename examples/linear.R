@@ -1,3 +1,10 @@
+#Reference
+#Fournier, D.A., H.J. Skaug, J. Ancheta, J. Ianelli,
+#A. Magnusson, M.N. Maunder, A. Nielsen, and J. Sibert.
+#2012. AD Model Builder: using automatic differentiation
+#for statistical inference of highly parameterized complex
+#nonlinear models. Optim. Methods Softw. 27:233-249.
+
 library(Rcpp)
 library(nloptr)
 library(ADinR)
@@ -25,7 +32,7 @@ for(i in 1:10){
   norm2<-norm2 + pow(y[i]-pred_Y,2.0)
 }
 
-f<-(nobs/2.0) * log(norm2) 
+f<-(nobs/2.0) * log(norm2)
 
 
 
