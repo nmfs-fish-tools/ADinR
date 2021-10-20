@@ -66,9 +66,9 @@ public:
     //            return *this;
     //        }
 
-    const double value() {
-        return this->info->value;
-    }
+//    const double value() {
+//        return this->info->value;
+//    }
     
     double value() {
         return this->info->value;
