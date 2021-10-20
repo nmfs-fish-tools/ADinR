@@ -44,7 +44,7 @@ struct transformation{
             * @param max
             * @return
             */
-           virtual double external_2_internal(REAL_T val, REAL_T min_, REAL_T max_) const = 0;
+           virtual double external_2_internal(double val, double min_, double max_) const = 0;
            /**
             * Convert a variables internal value to its external representation.
             * @param val
@@ -52,7 +52,7 @@ struct transformation{
             * @param max
             * @return
             */
-           virtual double internal_2_external(REAL_T val, REAL_T min_, REAL_T max_) const = 0;
+           virtual double internal_2_external(double val, double min_, double max_) const = 0;
            /**
             * The derivative of internal 2 external.
             * @param val
@@ -60,13 +60,13 @@ struct transformation{
             * @param max
             * @return
             */
-           virtual double derivative_internal_2_external(REAL_T val, REAL_T min_, REAL_T max_) const = 0;
+           virtual double derivative_internal_2_external(double val, double min_, double max_) const = 0;
 }
 
 struct logit_transformation : public transformation{
     
     
-    virtual double external_2_internal(REAL_T val, REAL_T min_, REAL_T max_)const {
+    virtual double external_2_internal(double val,  min_, double max_)const {
             if (val == min_) {
                 val += static_cast<REAL_T>(1e-8);
             } else if (val == max_) {
@@ -77,12 +77,12 @@ struct logit_transformation : public transformation{
             return std::log(p / (1.0 - p));
         }
 
-        virtual double internal_2_external(REAL_T val, REAL_T min_, REAL_T max_) const {
+        virtual double internal_2_external(double val, double min_, double max_) const {
             REAL_T p = std::exp(val) / (1.0 + std::exp(val));
             return p * (max_ - min_) + min_;
         }
 
-        virtual double derivative_internal_2_external(REAL_T val, REAL_T min_, REAL_T max_)const {
+        virtual double derivative_internal_2_external(double val, double min_, double max_)const {
             return (std::exp(val) * std::log(M_E)*(max_ - min_)) / (std::exp(val) + 1.0)-
                     (std::exp(static_cast<REAL_T> (2.0 * val)) * std::log(M_E)*(max_ - min_)) / std::pow((std::exp(val) + 1), 2.0);
         }
