@@ -433,7 +433,7 @@ Rcpp::List lbfgs(Rcpp::Nullable<Rcpp::List> control = R_NilValue) {
         i = iteration;
 
         for (int j = 0; j < nops; j++) {
-            wg[j] = variable::tape_g.independent_variables[j]->get_scaled_gradient(variable::tape_g.independent_variables[j]->internal_value)* gradient[j];
+            wg[j] = variable::tape_g.independent_variables[j]->get_scaled_gradient(variable::tape_g.independent_variables[j]->internal_value())* gradient[j];
             //                    this->parameters_m[j]->GetScaledGradient(
             //                    this->parameters_m[j]->GetInternalValue()) * this->gradient[j];
         }

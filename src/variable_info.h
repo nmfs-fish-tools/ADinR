@@ -68,9 +68,9 @@ struct logit_transformation : public transformation{
     
     virtual double external_2_internal(double val,  min_, double max_)const {
             if (val == min_) {
-                val += static_cast<REAL_T>(1e-8);
+                val += static_cast<double>(1e-8);
             } else if (val == max_) {
-                val -= static_cast<REAL_T>(1e-8);
+                val -= static_cast<double>(1e-8);
             }
 
             REAL_T p = ((val) - min_) / (max_ - min_);
