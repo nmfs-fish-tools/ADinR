@@ -322,7 +322,7 @@ bool line_search(
         if (fx <= function_value + tolerance * (10e-4) * step * descent) { // First Wolfe condition
 
             for (size_t j = 0; j < nops; j++) {
-                best[j] = variable::tape_g.independent_variables[j]->internal_value();
+                best[j] = variable::tape_g.independent_variables[j]->value;
             }
 
 
