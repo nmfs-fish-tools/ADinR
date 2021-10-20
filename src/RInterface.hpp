@@ -273,7 +273,7 @@ bool line_search(
 
     double step = i ? 1.0 : (1.0 / norm_g);
 
-    if (step != step) {
+    if (step != step || step == 0.0) {
         step = 1.0;
     }
 

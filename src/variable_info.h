@@ -124,9 +124,9 @@ struct variable_info {
     
     double internal_value() {
         if (this->is_bound) {
-            
             double r = this->transformation->external_2_internal(this->value, this->minb, this->maxb);
             std::cout<<value<<" ---- iv = "<<r<<"\n";
+            return r;
         } else {
             return this->value;
         }
