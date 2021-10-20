@@ -124,7 +124,9 @@ struct variable_info {
     
     double internal_value() {
         if (this->is_bound) {
-            return this->transformation->external_2_internal(this->value, this->minb, this->maxb);
+            
+            double r = this->transformation->external_2_internal(this->value, this->minb, this->maxb);
+            std::cout<<value<<" ---- iv = "<<r<<"\n";
         } else {
             return this->value;
         }
@@ -140,7 +142,6 @@ struct variable_info {
     
     void update_value(double v) {
         if (this->is_bound) {
-            std::cout<<"updating "<<v<<"\n";
             this->value = (variable_info::transformation->internal_2_external(v, this->minb, this->maxb));
             
         } else {
