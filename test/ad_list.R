@@ -5,6 +5,10 @@ library(ADinR)
 #load the adinr module
 adinr<-Rcpp::Module("adinr", PACKAGE="ADinR")
 
-my.matrix <- matrix(data = "Rccp_variable", nrow = 3, ncol = 2)
+my.matrix <-adinr$matrix(10,10)
 
-my.matrix[1,1]<-adinr$variable()
+for(i in 1:10){
+    for(j in 1:10){
+        print(my.matrix$at(i,j)$value())
+    }
+}

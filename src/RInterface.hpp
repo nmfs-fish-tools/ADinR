@@ -608,8 +608,8 @@ RCPP_MODULE(adinr) {
     class_<variable_matrix >("variable_matrix")
             .constructor()
             .constructor<int,int>()
-            .method("resize", &variable_vector::resize)
-            .method("at", &variable_vector::at);
+            .method("resize", &variable_matrix::resize)
+            .method("at", &variable_matrix::at);
     function("acos", &ad_acos);
     function("asin", &ad_asin);
     function("atan", &ad_atan);
