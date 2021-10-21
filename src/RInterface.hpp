@@ -42,6 +42,16 @@ variable make_variable() {
     return v;
 }
 
+variable_vector make_vector(int size) {
+    variable_vector v(size);
+    return v;
+}
+
+variable_matrix make_matrix(int rows, int cols) {
+    variable_matrix m(rows,cols);
+    return m;
+}
+
 void show(variable v){
     std::cout<<v.value()<<std::endl;
 }
@@ -590,6 +600,16 @@ RCPP_MODULE(adinr) {
             .method("value", &variable::value)
             .method("set_value", &variable::set_value)
             .method("bounds", &variable::bounds);
+    class_<variable_vector >("variable_vector")
+            .constructor()
+            .constructor<int>()
+            .method("resize", &variable_vector::resize)
+            .method("at", &variable_vector::at);
+    class_<variable_matrix >("variable_matrix")
+            .constructor()
+            .constructor<int,int>()
+            .method("resize", &variable_vector::resize)
+            .method("at", &variable_vector::at);
     function("acos", &ad_acos);
     function("asin", &ad_asin);
     function("atan", &ad_atan);
@@ -620,11 +640,15 @@ RCPP_MODULE(adinr) {
     function("make_estimable", &make_estimable, "adds a variable to the list of independent variables to be estimated");
     function("parameter", &parameter, "creates a variable and adds it to the list of estimable parameters");
     function("variable", &make_variable, "returns a variable");
+    function("vector", &make_vector, "returns a vector of variables");
+    function("matrix", &make_matrix, "returns a matrix of variables");
     function("evaluate", &evaluate, "evaluates the objective function at the given x values");
     function("gradient", &gradient, "evaluates the gradient at the given x values");
     function("parameter_values", &get_values, "returns a vector of parameter values");
     function("clear", &clear, "clears the tape of entries and independent variables");
     function("minimize", &lbfgs, "minimizes the objective function using l-bfgs");
+    function("set_recording", &set_recording);
+    function("is_recording", &is_recording);
     function("show", &show);
 }
 

@@ -95,6 +95,56 @@ public:
 
 tape variable::tape_g;
 
+struct variable_vector{
+    std::vector<variable> data;
+    int size_m = 0;
+    
+    variable_vector(){
+        
+    }
+    
+    variable_vector(int size):
+    rsize_m(size){
+        this->data.resize(size);
+    }
+    
+    void resize(int size){
+        this->data.resize(size);
+    }
+    
+    variable& at(int i){
+        i--;
+        return data[i];
+    }
+    
+}
+
+struct variable_matrix{
+    std::vector<variable> data;
+    int rows_m=0;
+    int cols_m=0;
+    
+    variable_matrix(){
+        
+    }
+    
+    variable_matrix(int rows, int cols):
+    rows_m(rows), cols_m(cols){
+        this->data.resize(rows*cols);
+    }
+    
+    void resize(int rows, int cols){
+        this->data.resize(rows*cols);
+    }
+    
+    variable& at(int i, int j){
+        i--;
+        j--;
+        return data[i*cols+j];
+    }
+    
+}
+
 
 #endif /* VARIABLE_HPP */
 
