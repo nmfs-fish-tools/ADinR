@@ -104,7 +104,7 @@ struct variable_vector{
     }
     
     variable_vector(int size):
-    rsize_m(size){
+    size_m(size){
         this->data.resize(size);
     }
     
