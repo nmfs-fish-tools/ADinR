@@ -65,8 +65,8 @@ setMethod("*", signature(e1 = "Rcpp_variable", e2 = "Rcpp_variable"), function (
   adinr$multvv(e1, e2))
 setMethod("*", signature(e1 = "Rcpp_variable", e2 = "numeric"), function (e1, e2){
   return(adinr$multvd(e1, e2))})
-setMethod("*", signature(e1 = "numeric", e2 = "Rcpp_variable"), function (e1, e2)}
-  return(adinr$multdv(e1, e2))})
+setMethod("*", signature(e1 = "numeric", e2 = "Rcpp_variable"), function (e1, e2)
+  adinr$multdv(e1, e2))
 
 #/
 setMethod("/", signature(e1 = "Rcpp_variable", e2 = "Rcpp_variable"), function (e1, e2)
