@@ -640,8 +640,8 @@ RCPP_MODULE(adinr) {
     function("make_estimable", &make_estimable, "adds a variable to the list of independent variables to be estimated");
     function("parameter", &parameter, "creates a variable and adds it to the list of estimable parameters");
     function("variable", &make_variable, "returns a variable");
-    function("vector", &make_vector, "returns a vector of variables");
-    function("matrix", &make_matrix, "returns a matrix of variables");
+    function("make_vector", &make_vector, "returns a vector of variables");
+    function("make_matrix", &make_matrix, "returns a matrix of variables");
     function("evaluate", &evaluate, "evaluates the objective function at the given x values");
     function("gradient", &gradient, "evaluates the gradient at the given x values");
     function("parameter_values", &get_values, "returns a vector of parameter values");
