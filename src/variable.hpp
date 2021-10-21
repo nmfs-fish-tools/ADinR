@@ -117,7 +117,7 @@ struct variable_vector{
         return data[i];
     }
     
-}
+};
 
 struct variable_matrix{
     std::vector<variable> data;
@@ -140,10 +140,10 @@ struct variable_matrix{
     variable& at(int i, int j){
         i--;
         j--;
-        return data[i*cols+j];
+        return data[i*cols_m+j];
     }
     
-}
+};
 
 
 #endif /* VARIABLE_HPP */
