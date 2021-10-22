@@ -54,6 +54,10 @@ public:
     variable(const variable& other) :
     info(other.info) {
     }
+    
+    variable& operator =(const variable& other) {
+        this->info = other.info;
+    }
 
 
     //        variable(const std::shared_ptr<ad_operator >& other) {
