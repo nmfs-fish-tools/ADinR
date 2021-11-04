@@ -40,8 +40,7 @@ class variable {
 public:
     static tape tape_g;
     std::shared_ptr<variable_info > info = NULL; //std::make_shared<variable_info >();
-    
-    
+
     variable(double value = 0.0)
     : info(std::make_shared<variable_info >()) {
         info->value = value;
@@ -54,8 +53,8 @@ public:
     variable(const variable& other) :
     info(other.info) {
     }
-    
-    variable& operator =(const variable& other) {
+
+    variable& operator=(const variable& other) {
         this->info = other.info;
     }
 
@@ -71,15 +70,21 @@ public:
     //            return *this;
     //        }
 
-//    const double value() {
-//        return this->info->value;
-//    }
-    
+    //    const double value() {
+    //        return this->info->value;
+    //    }
+
     double value() {
         return this->info->value;
     }
 
     void set_value(double v) {
+        if (variable::tape_g.recording) {
+            std::shared_ptr<assignment_operator> ret = std::make_shared<assignment_operator>();
+            ret->dependent = this->info;
+            ret->v = v;
+            variable::tape_g.stack.push_back(ret);
+        }
         this->info->value = v;
     }
 
@@ -93,60 +98,60 @@ public:
         this->info->update_value(v);
     }
 
- 
+
 
 };
 
 tape variable::tape_g;
 
-struct variable_vector{
+struct variable_vector {
     std::vector<variable> data;
     int size_m = 0;
-    
-    variable_vector(){
-        
+
+    variable_vector() {
+
     }
-    
-    variable_vector(int size):
-    size_m(size){
+
+    variable_vector(int size) :
+    size_m(size) {
         this->data.resize(size);
     }
-    
-    void resize(int size){
+
+    void resize(int size) {
         this->data.resize(size);
     }
-    
-    variable& at(int i){
+
+    variable& at(int i) {
         i--;
         return data[i];
     }
-    
+
 };
 
-struct variable_matrix{
+struct variable_matrix {
     std::vector<variable> data;
-    int rows_m=0;
-    int cols_m=0;
-    
-    variable_matrix(){
-        
+    int rows_m = 0;
+    int cols_m = 0;
+
+    variable_matrix() {
+
     }
-    
-    variable_matrix(int rows, int cols):
-    rows_m(rows), cols_m(cols){
-        this->data.resize(rows*cols);
+
+    variable_matrix(int rows, int cols) :
+    rows_m(rows), cols_m(cols) {
+        this->data.resize(rows * cols);
     }
-    
-    void resize(int rows, int cols){
-        this->data.resize(rows*cols);
+
+    void resize(int rows, int cols) {
+        this->data.resize(rows * cols);
     }
-    
-    variable& at(int i, int j){
+
+    variable& at(int i, int j) {
         i--;
         j--;
-        return data[i*cols_m+j];
+        return data[i * cols_m + j];
     }
-    
+
 };
 
 

@@ -34,12 +34,16 @@
 #define TAPE_HPP
 
 #include<vector>
+#include <map
+#include <set>
 #include "operators.hpp"
 
 struct tape {
     std::vector<std::shared_ptr<variable_info> > independent_variables;
     std::vector<std::shared_ptr<ad_operator > > stack;
     std::vector<double> gradient;
+    std::map<size_t, std::map<size_t, double> > hessian;
+    std::map<size_t, std::set<variable_info> > live_sets;
     bool recording = true;
     
 
@@ -56,6 +60,18 @@ struct tape {
         this->gradient[this->stack[stack.size() - 1]->dependent->id] = 1.0;
         for (int i = stack.size() - 1; i >= 0; i--) {
             this->stack[i]->first_order(this->gradient);
+        }
+        
+        void reverse_second_order() {
+            gradient.resize(variable_info::id_g);
+            hessian.clear();
+            live_sets.clear();
+            
+            std::fill(this->gradient.begin(), this->gradient.end(), 0.0);
+            this->gradient[this->stack[stack.size() - 1]->dependent->id] = 1.0;
+            for (int i = stack.size() - 1; i >= 0; i--) {
+                this->stack[i]->second_order(this->gradient, this->hessian,this->live_sets);
+            }
         }
 
     }

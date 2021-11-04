@@ -115,6 +115,7 @@ struct variable_info {
     double minb;
     double maxb;
     bool is_bound = false;
+    bool is_nonlinear = false;
     
     variable_info() :
     id(variable_info::id_g++), value(0) {
