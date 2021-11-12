@@ -62,17 +62,17 @@ struct tape {
             this->stack[i]->first_order(this->gradient);
         }
         
-        void reverse_second_order() {
-            gradient.resize(variable_info::id_g);
-            hessian.clear();
-            live_sets.clear();
-            
-            std::fill(this->gradient.begin(), this->gradient.end(), 0.0);
-            this->gradient[this->stack[stack.size() - 1]->dependent->id] = 1.0;
-            for (int i = stack.size() - 1; i >= 0; i--) {
-                this->stack[i]->second_order(this->gradient, this->hessian,this->live_sets);
-            }
-        }
+//        void reverse_second_order() {
+//            gradient.resize(variable_info::id_g);
+//            hessian.clear();
+//            live_sets.clear();
+//            
+//            std::fill(this->gradient.begin(), this->gradient.end(), 0.0);
+//            this->gradient[this->stack[stack.size() - 1]->dependent->id] = 1.0;
+//            for (int i = stack.size() - 1; i >= 0; i--) {
+//                this->stack[i]->second_order(this->gradient, this->hessian,this->live_sets);
+//            }
+//        }
 
     }
 };
