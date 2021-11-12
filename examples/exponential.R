@@ -45,6 +45,14 @@ f<-(nobs/2.0) * log(norm2)
 #minimize the objective function
 results<-adinr$minimize()
 
+for(i in 1:nobs){
+  pred_Y<-pred_Y<- a * exp(k * x[i])
+  predicted[i]<-pred_Y$value()
+}
+plot.new()
+plot(x=x, y=y)
+lines(x,predicted)
+
 results
 
 
