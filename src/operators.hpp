@@ -64,41 +64,41 @@ struct ad_operator {
         
     }
     
-    double value(derivatives,std::map<size_t, std::map<size_t, double> >& second_derivatives, size_t& i, size_t& j){
-        
-        if(i < j){
-            derivatives,std::map<size_t,std::map<size_t, double> >::iterator it;
-            
-            it = second_derivatives.find(i);
-            if(it != second_derivatives.end()){
-                std::map<size_t, double>::iterator jt;
-                jt = (*it).second.find(j);
-                if(jt != (*it).second.end()){
-                    return (*jt).second;
-                }else{
-                    return 0;
-                }
-            }
-        }else{
-            it = second_derivatives.find(j);
-            if(it != second_derivatives.end()){
-                std::map<size_t, double>::iterator jt;
-                jt = (*it).second.find(i);
-                if(jt != (*it).second.end()){
-                    return (*jt).second;
-                }else{
-                    return 0;
-                }
-            }
-        }
-    }
-    double& reference(derivatives,std::map<size_t, std::map<size_t, double> >& second_derivatives, size_t& i, size_t& j){
-        if(i < j){
-            return second_derivatives[i][j];
-        }else{
-            return second_derivatives[j][i];
-        }
-    }
+//    double value(std::vector<double>& derivatives,std::map<size_t, std::map<size_t, double> >& second_derivatives, size_t& i, size_t& j){
+//        
+//        if(i < j){
+//            derivatives,std::map<size_t,std::map<size_t, double> >::iterator it;
+//            
+//            it = second_derivatives.find(i);
+//            if(it != second_derivatives.end()){
+//                std::map<size_t, double>::iterator jt;
+//                jt = (*it).second.find(j);
+//                if(jt != (*it).second.end()){
+//                    return (*jt).second;
+//                }else{
+//                    return 0;
+//                }
+//            }
+//        }else{
+//            it = second_derivatives.find(j);
+//            if(it != second_derivatives.end()){
+//                std::map<size_t, double>::iterator jt;
+//                jt = (*it).second.find(i);
+//                if(jt != (*it).second.end()){
+//                    return (*jt).second;
+//                }else{
+//                    return 0;
+//                }
+//            }
+//        }
+//    }
+//    double& reference(std::vector<double>& derivatives,std::map<size_t, std::map<size_t, double> >& second_derivatives, size_t& i, size_t& j){
+//        if(i < j){
+//            return second_derivatives[i][j];
+//        }else{
+//            return second_derivatives[j][i];
+//        }
+//    }
     
     /**
      *Computes the exact second-order local derivative(s) for this tape entry.
