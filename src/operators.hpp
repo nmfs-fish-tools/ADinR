@@ -103,7 +103,7 @@ struct ad_operator {
     /**
      *Computes the exact second-order local derivative(s) for this tape entry.
      */
-    virtual const std::map<size_t, std::map<size_t, double> > compute_second_order_adjoint()}{};
+    virtual const std::map<size_t, std::map<size_t, double> > compute_second_order_adjoint(){};
     
     virtual void first_order(std::vector<double>& derivatives) = 0;
     
