@@ -110,10 +110,10 @@ struct ad_operator {
     /**
      *Computes the exact second-order derivative values for this tape tape entry.
      */
-    virtual void second_order(std::vector<double>& derivatives,std::map<std::map<double> >& second_derivatives,
-                              std::map<std::set<std::shared_ptr<variable_info > > >& live_sets){
-        
-    }
+//    virtual void second_order(std::vector<double>& derivatives,std::map<std::map<double> >& second_derivatives,
+//                              std::map<std::set<std::shared_ptr<variable_info > > >& live_sets){
+//        
+//    }
 };
 
 struct unary_operator : public ad_operator {
