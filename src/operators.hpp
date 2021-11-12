@@ -103,7 +103,7 @@ struct ad_operator {
     /**
      *Computes the exact second-order local derivative(s) for this tape entry.
      */
-    virtual const std::map<size_t, std::map<size_t, double> > compute_second_order_adjoint() = 0;
+    virtual const std::map<size_t, std::map<size_t, double> > compute_second_order_adjoint()}{};
     
     virtual void first_order(std::vector<double>& derivatives) = 0;
     
@@ -132,20 +132,20 @@ struct unary_operator : public ad_operator {
         std::cout <<"\"compute_second_adjoint\" not yet implemented.\n";
     }
     
-    virtual const std::set<std::shared_ptr<variable_info > > create_current_set(std::map<size_t, std::set<std::shared_ptr<variable_info > > >& live_sets){
-        
-        std::set<variable_info> current;
-        typename std::set<variable_info>::iterator it;
-        std::set<variable_info>& live = live_sets[this->dependent->id];
-        
-        for(it = live.begin(); it != live.end(); it++){
-            current.insert(it);
-        }
-        current.insert(x);
-        
-        return current;
-    }
-    
+//    virtual const std::set<std::shared_ptr<variable_info > > create_current_set(std::map<size_t, std::set<std::shared_ptr<variable_info > > >& live_sets){
+//        
+//        std::set<variable_info> current;
+//        typename std::set<variable_info>::iterator it;
+//        std::set<variable_info>& live = live_sets[this->dependent->id];
+//        
+//        for(it = live.begin(); it != live.end(); it++){
+//            current.insert(it);
+//        }
+//        current.insert(x);
+//        
+//        return current;
+//    }
+//    
     virtual void first_order(std::vector<double>& derivatives) {
         
     }
@@ -402,20 +402,20 @@ struct binary_operator : public ad_operator {
     const std::map<size_t, std::map<size_t, double> > compute_second_adjoint(){
         std::cout <<"\"compute_second_adjoint\" not yet implemented.\n";
     }
-    
-    virtual const std::set<std::shared_ptr<variable_info > > create_current_set(std::map<std::set<std::shared_ptr<variable_info > > >& live_sets){
-        std::set<variable_info> current;
-        typename std::set<variable_info>::iterator it;
-        std::set<variable_info>& live = live_sets[this->dependent->id];
-        
-        for(it = live.begin(); it != live.end(); it++){
-            current.insert(it);
-        }
-        current.insert(left);
-        current.insert(right);
-        
-        return current;
-    }
+//    
+//    virtual const std::set<std::shared_ptr<variable_info > > create_current_set(std::map<std::set<std::shared_ptr<variable_info > > >& live_sets){
+//        std::set<variable_info> current;
+//        typename std::set<variable_info>::iterator it;
+//        std::set<variable_info>& live = live_sets[this->dependent->id];
+//        
+//        for(it = live.begin(); it != live.end(); it++){
+//            current.insert(it);
+//        }
+//        current.insert(left);
+//        current.insert(right);
+//        
+//        return current;
+//    }
     
     virtual void first_order(std::vector<double>& derivatives) {
         
