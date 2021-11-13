@@ -35,6 +35,7 @@
 
 #include<vector>
 #include <map>
+
 #include <set>
 #include "operators.hpp"
 
@@ -44,7 +45,7 @@ struct tape {
     std::vector<double> gradient;
     std::map<size_t, std::map<size_t, double> > hessian;
     std::map<size_t, std::set<variable_info> > live_sets;
-    bool recording = true;
+    bool recording = false;
     
 
     double forward() {

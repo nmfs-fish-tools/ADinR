@@ -21,6 +21,7 @@ y<-c(6.14013, 10.9014, 16.2082, 23.6577, 31.8638,
 
 nobs<-length(x)
 
+adinr$set_recording(FALSE)
 #independent variables
 a<-adinr$parameter()
 a$set_value(0.0)
@@ -28,7 +29,7 @@ a$set_value(0.0)
 k<-adinr$parameter()
 k$set_value(0.0)
 
-
+adinr$set_recording(TRUE)
 #objective function
 norm2<-adinr$variable()
 
@@ -53,6 +54,7 @@ plot.new()
 plot(x=x, y=y)
 lines(x,predicted)
 
+adinr$clear()
 results
 
 
