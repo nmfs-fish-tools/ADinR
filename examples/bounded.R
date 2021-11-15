@@ -40,6 +40,9 @@ x3$bounds(0,100)
 
 #least squares objective function
 norm2<-adinr$variable()
+predicted <- c(1:length(x))
+
+adinr$set_recording(TRUE)
 
 for(i in 1:nobs){
   pred_Y<- x0 * (pow(u[[i]],2) + x1 * u[[i]]) / (pow(u[[i]],2) + x2* u[[i]] + x3)
@@ -51,5 +54,14 @@ f<-norm2
 
 #minimize the objective function
 results<-adinr$minimize()
+
+
+for(i in 1:nobs){
+  pred_Y<-pred_Y<- a * exp(k * x[i])
+  predicted[i]<-pred_Y$value()
+}
+plot.new()
+plot(x=x, y=y)
+lines(x,predicted)
 
 results

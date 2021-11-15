@@ -21,7 +21,7 @@ y<-c(6.14013, 10.9014, 16.2082, 23.6577, 31.8638,
 
 nobs<-length(x)
 
-adinr$set_recording(FALSE)
+
 #independent variables
 a<-adinr$parameter()
 a$set_value(0.0)

@@ -1,3 +1,5 @@
+remotes::install_github("nmfs-fish-tools/ADinR")
+
 library(Rcpp)
 library(nloptr)
 library(ADinR)
@@ -54,13 +56,13 @@ h$set_value(om_input[["h"]])
 recruitment_deviation<-list()
 for(i in 1:nyears){
     recruitment_deviation[[i]]<-adinr$variable()
-    recruitment_deviation[[i]]$set_value(om_input[["logR.resid"]][i])
+    recruitment_deviation[[i]]$set_value(0.5)
     recruitment_deviation[[i]]$bounds(-10,10)
 }
 
 #virgin spawning biomass
 log_S0<-adinr$variable()
-log_S0$set_value(9557.836)
+log_S0$set_value(log(9557.836))
 
 #initial numbers
 initial_numbers<-list()
@@ -72,7 +74,7 @@ for(i in 1:nages){
 initial_deviations<-list()
 for(i in 1:nages){
     initial_deviations[[i]]<-adinr$parameter()
-    initial_deviations[[i]]$set_value(0)
+    initial_deviations[[i]]$set_value(0.5)
 }
 
 #logistic selectivity
@@ -87,8 +89,8 @@ a50$bounds(0.0001,nages)
 fishing_mortality<-list()
 for(i in 1:nyears){
     fishing_mortality[[i]]<-adinr$variable()
-    fishing_mortality[[i]]$set_value(0.1)
-    fishing_mortality[[i]]$bounds(0.0,4.00)
+    fishing_mortality[[i]]$set_value(0.5)
+    fishing_mortality[[i]]$bounds(0.001,4.00)
 }
 
 #natural mortality
@@ -143,11 +145,12 @@ predicted_age_composition<-make_nested_variable_list(nyears,nages)
 #computed catch abundance
 predicted_catch_abundance<-make_variable_list(nyears)
 
+adinr$set_recording(TRUE)
 
 #STATISTICAL CATCH AT AGE MODEL
 reset_ssb<-function(){
     for(i in 1:nyears){
-        SSB[[i]]<-SSB[[i]]*0.0
+        SSB[[i]]$set_value(0.0)
     }
 }
 
@@ -274,6 +277,8 @@ objective_function<-function(){
 
 f<-objective_function()
 
+adinr$parameter_values()
 #fit the model
 results<-adinr$minimize()
 results
+adinr$clear()

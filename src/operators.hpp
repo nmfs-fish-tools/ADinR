@@ -60,7 +60,7 @@ struct ad_operator {
     std::shared_ptr<variable_info > dependent;
     virtual double value() = 0;
     virtual void update() = 0; //used for forward sweep
-    virtual const std::set<std::shared_ptr<variable_info > > create_current_set(std::map<size_t, std::set<std::shared_ptr<variable_info > > >& live_sets){
+//    virtual const std::set<std::shared_ptr<variable_info > > create_current_set(std::map<size_t, std::set<std::shared_ptr<variable_info > > >& live_sets){
         
     }
     
@@ -103,7 +103,7 @@ struct ad_operator {
     /**
      *Computes the exact second-order local derivative(s) for this tape entry.
      */
-    virtual const std::map<size_t, std::map<size_t, double> > compute_second_order_adjoint(){};
+//    virtual const std::map<size_t, std::map<size_t, double> > compute_second_order_adjoint(){};
     
     virtual void first_order(std::vector<double>& derivatives) = 0;
     
@@ -128,9 +128,9 @@ struct unary_operator : public ad_operator {
         
     }
     
-    const std::map<size_t, std::map<size_t, double> > compute_second_adjoint(){
-        std::cout <<"\"compute_second_adjoint\" not yet implemented.\n";
-    }
+//    const std::map<size_t, std::map<size_t, double> > compute_second_adjoint(){
+//        std::cout <<"\"compute_second_adjoint\" not yet implemented.\n";
+//    }
     
 //    virtual const std::set<std::shared_ptr<variable_info > > create_current_set(std::map<size_t, std::set<std::shared_ptr<variable_info > > >& live_sets){
 //        
