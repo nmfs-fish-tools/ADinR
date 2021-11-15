@@ -56,6 +56,7 @@ public:
 
     variable& operator=(const variable& other) {
         this->info = other.info;
+        return (*this);
     }
 
 
