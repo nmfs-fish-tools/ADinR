@@ -33,7 +33,7 @@
 #define OPERAdoubleORS_HPP
 
 #include <cmath>
-
+#include <vector>
 #include <set>
 #include <unordered_map>
 #include <memory>
@@ -399,9 +399,9 @@ struct binary_operator : public ad_operator {
         
     }
     
-    const std::map<size_t, std::map<size_t, double> > compute_second_adjoint(){
-        std::cout <<"\"compute_second_adjoint\" not yet implemented.\n";
-    }
+//    const std::map<size_t, std::map<size_t, double> > compute_second_adjoint(){
+//        std::cout <<"\"compute_second_adjoint\" not yet implemented.\n";
+//    }
 //    
 //    virtual const std::set<std::shared_ptr<variable_info > > create_current_set(std::map<std::set<std::shared_ptr<variable_info > > >& live_sets){
 //        std::set<variable_info> current;
