@@ -62,7 +62,7 @@ struct ad_operator {
     virtual void update() = 0; //used for forward sweep
 //    virtual const std::set<std::shared_ptr<variable_info > > create_current_set(std::map<size_t, std::set<std::shared_ptr<variable_info > > >& live_sets){
         
-    }
+//    }
     
 //    double value(std::vector<double>& derivatives,std::map<size_t, std::map<size_t, double> >& second_derivatives, size_t& i, size_t& j){
 //        
