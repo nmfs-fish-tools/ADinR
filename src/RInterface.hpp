@@ -48,12 +48,12 @@ variable_vector make_vector(int size) {
 }
 
 variable_matrix make_matrix(int rows, int cols) {
-    variable_matrix m(rows,cols);
+    variable_matrix m(rows, cols);
     return m;
 }
 
-void show(variable v){
-    std::cout<<v.value()<<std::endl;
+void show(variable v) {
+    std::cout << v.value() << std::endl;
 }
 
 Rcpp::NumericVector gradient(Rcpp::NumericVector x) {
@@ -313,9 +313,9 @@ bool line_search(
         for (size_t j = 0; j < nops; j++) {
 
             if (nx[j] != nx[j]) {
-                
-//                std::cout<<j<< " "<<ls<<" "<<x[j]<< " "<<step <<" " <<z[j]<<"\n";
-                
+
+                //                std::cout<<j<< " "<<ls<<" "<<x[j]<< " "<<step <<" " <<z[j]<<"\n";
+
             }
             variable::tape_g.independent_variables[j]->update_value(nx[j]);
         }
@@ -447,17 +447,15 @@ Rcpp::List lbfgs(Rcpp::Nullable<Rcpp::List> control = R_NilValue) {
 
         for (int j = 0; j < nops; j++) {
             wg[j] = variable::tape_g.independent_variables[j]->
-            get_scaled_gradient(variable::tape_g.independent_variables[j]->internal_value())* gradient[j];
+                    get_scaled_gradient(variable::tape_g.independent_variables[j]->internal_value()) * gradient[j];
             //                    this->parameters_m[j]->GetScaledGradient(
             //                    this->parameters_m[j]->GetInternalValue()) * this->gradient[j];
         }
 
-        //        if ((i % this->print_interval) == 0) {
-        //            std::cout << "Iteration " << i << "\n";
-        //            std::cout << "Phase = " << this->phase_m << "\n";
-        //
-        //            this->Print();
-        //        }
+        if ((i % 10) == 0) {
+            std::cout << "Iteration " << i << "\n";
+        }
+
 
         if (maxgc < tolerance) {
             end = std::chrono::system_clock::now();
@@ -607,7 +605,7 @@ RCPP_MODULE(adinr) {
             .method("at", &variable_vector::at);
     class_<variable_matrix >("variable_matrix")
             .constructor()
-            .constructor<int,int>()
+            .constructor<int, int>()
             .method("resize", &variable_matrix::resize)
             .method("at", &variable_matrix::at);
     function("acos", &ad_acos);
@@ -640,8 +638,8 @@ RCPP_MODULE(adinr) {
     function("make_estimable", &make_estimable, "adds a variable to the list of independent variables to be estimated");
     function("parameter", &parameter, "creates a variable and adds it to the list of estimable parameters");
     function("variable", &make_variable, "returns a variable");
-//    function("make_vector", &make_vector, "returns a vector of variables");
-//    function("make_matrix", &make_matrix, "returns a matrix of variables");
+    //    function("make_vector", &make_vector, "returns a vector of variables");
+    //    function("make_matrix", &make_matrix, "returns a matrix of variables");
     function("evaluate", &evaluate, "evaluates the objective function at the given x values");
     function("gradient", &gradient, "evaluates the gradient at the given x values");
     function("parameter_values", &get_values, "returns a vector of parameter values");
