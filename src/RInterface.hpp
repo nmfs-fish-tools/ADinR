@@ -303,9 +303,9 @@ bool line_search(
     for (ls = 0; ls < max_line_searches; ++ls) {
 
 
-        //        if (((this->outer_iteration + ls) % this->print_interval) == 0) {
-        //            this->Print();
-        //        }
+                if (ls % 10) == 0) {
+                    std::cout<<"Line search iteration "<<ls<<"\n";
+                }
 
         // Tentative solution, gradient and loss
         std::valarray<double> nx = x - step * z;
