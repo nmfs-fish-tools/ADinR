@@ -257,7 +257,7 @@ bool line_search(
 
     int max_iterations = 1000;
     double tolerance = 1e-4;
-    int max_line_searches = 100;
+    int max_line_searches = 500;
     double descent = 0;
 
     int nops = variable::tape_g.independent_variables.size();
