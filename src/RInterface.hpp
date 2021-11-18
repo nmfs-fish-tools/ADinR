@@ -303,7 +303,7 @@ bool line_search(
     for (ls = 0; ls < max_line_searches; ++ls) {
 
 
-                if (ls % 10) == 0) {
+                if ((ls % 10) == 0) {
                     std::cout<<"Line search iteration "<<ls<<"\n";
                 }
 
