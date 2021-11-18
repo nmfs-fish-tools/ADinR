@@ -303,9 +303,10 @@ bool line_search(
     for (ls = 0; ls < max_line_searches; ++ls) {
 
 
-                if ((ls % 10) == 0) {
-                    std::cout<<"Line search iteration "<<ls<<"\n";
-                }
+        if ((ls % 10) == 0) {
+            std::cout << "Line search iteration " << ls << "\n";
+            std::cout << "f = " << fx << "\n";
+        }
 
         // Tentative solution, gradient and loss
         std::valarray<double> nx = x - step * z;
@@ -378,7 +379,7 @@ Rcpp::List lbfgs(Rcpp::Nullable<Rcpp::List> control = R_NilValue) {
     std::chrono::time_point<std::chrono::system_clock> start, end;
     start = std::chrono::system_clock::now();
     int max_history = 200;
-    int max_iterations = 1000;
+    int max_iterations = 500;
     double tolerance = 1e-4;
     double function_value;
     double maxgc;
@@ -454,6 +455,7 @@ Rcpp::List lbfgs(Rcpp::Nullable<Rcpp::List> control = R_NilValue) {
 
         if ((i % 10) == 0) {
             std::cout << "Iteration " << i << "\n";
+            std::cout << "f = " << fx << ", maxgc = " << maxgc << "\n";
         }
 
 
