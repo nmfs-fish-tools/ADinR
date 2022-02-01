@@ -380,7 +380,7 @@ Rcpp::List lbfgs(Rcpp::Nullable<Rcpp::List> control = R_NilValue) {
     std::chrono::time_point<std::chrono::system_clock> start, end;
     start = std::chrono::system_clock::now();
     int max_history = 200;
-    int max_iterations = 500;
+    int max_iterations = 1000;
     double tolerance = 1e-4;
     double function_value;
     double maxgc;
@@ -534,7 +534,7 @@ Rcpp::List lbfgs(Rcpp::Nullable<Rcpp::List> control = R_NilValue) {
                 iteration,
                 max_iterations,
                 false)) {
-            std::cout << "Max line searches";
+            std::cout << "Max line searches\n\n";
             end = std::chrono::system_clock::now();
             std::chrono::duration<double> elapsed_seconds = end - start;
             for (size_t j = 0; j < nops; j++) {
@@ -589,7 +589,7 @@ Rcpp::List lbfgs(Rcpp::Nullable<Rcpp::List> control = R_NilValue) {
     results["gradient"] = rgrad;
     results["parameter values"] = rx;
 
-    std::cout << "Max iterations!";
+    std::cout << "Max iterations!\n\n";
 
     return results;
 }

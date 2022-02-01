@@ -21,18 +21,21 @@ time<-c(40,43,46,49,52,55,58,61,64,67,70,73,76,79,82,85,88,
         130,133,136,139,142,145,148,151,154,157,160,163,166,
         169,172)
 
+nobs<-length(time)
+
 observedCPUE<-c(2.33,1.97,1.8,1.76,1.69,1.63,1.51,1.47,1.4,
                 1.48,1.47,1.5,1.49,1.33,1.49,1.54,1.5,1.6,
                 1.67,1.79,1.75,1.94,2.13,2.3,2.32,2.36,2.29,
                 2.35,1.53,1.19,1.12,1.11,0.96,0.9,0.81,0.72,
                 0.7,0.52,0.3,0.33,0.19,0.18,0.13,0.14,0.06)
+observedCPUE<-observedCPUE*runif(n = nobs, min = 0.9, max = 1.1)
 
 observedEffort<-c(2.58,2.49,2.06,2.5,2.43,2.15,2.32,2.59,2.36,
                   2.23,1.9,2,2.62,1.05,1.41,1.23,1.33,1.06,0.9,
                   1.06,0.97,0.62,0.94,0.87,1.12,1.23,1.31,4.77,
                   4.58,4.37,5.09,5.05,4.38,4.78,4.32,5.42,5,6.54,
                   7,7.27,6.32,6.67,6.92,7.14,3.33)
-nobs<-length(time)
+observedEffort<-observedEffort*runif(n = nobs, min = 0.9, max = 1.1)
 
 #PARAMETERS
 r<-adinr$parameter()
@@ -93,22 +96,22 @@ norm2$set_value(0.0)
 # 
 
 for ( i in 1:nobs) {
-  predictedCPUE[[i]]<- r -
-    (r / q * k) *
-    observedCPUE[i] -
-    q * observedEffort[i];
+  # predictedCPUE[[i]]<- r -
+  #   (r / q * k) *
+  #   observedCPUE[i] -
+  #   q * observedEffort[i];
 
   # norm2<-norm2 + pow(observedCPUE[i] - predictedCPUE[[i]], 2.0)
   
-    # predictedCPUE[[i]]<- r -
-    #   (r / q * k) *
-    #   ((observedCPUE[i] + observedCPUE[i]) / 2.0) -
-    #   q * ((observedEffort[i] + observedEffort[i]) / 2.0)
-    # 
+    predictedCPUE[[i]]<- r -
+      (r / q * k) *
+      ((observedCPUE[i] + observedCPUE[i]) / 2.0) -
+      q * ((observedEffort[i] + observedEffort[i]) / 2.0)
+
    norm2<-norm2 + pow(observedCPUE[i] - predictedCPUE[[i]], 2.0)
 }
 
-f<-log(norm2)
+f<-(nobs*0.5)*log(norm2)
 f$value()
 
 
