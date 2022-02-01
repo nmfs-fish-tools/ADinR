@@ -43,7 +43,7 @@ public:
 
     variable(double value = 0.0)
     : info(std::make_shared<variable_info >()) {
-        info->value = value;
+        this->set_value(value);
     }
 
     variable(const std::shared_ptr<variable_info >& other)

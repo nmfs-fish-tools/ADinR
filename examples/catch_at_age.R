@@ -278,8 +278,8 @@ f<-objective_function()
 
 x<-adinr$parameter_values()
 #fit the model
-# results<-adinr$minimize()
-results<-nlminb(start =x,objective=adinr$evaluate, gradient=adinr$gradient)
-results
+results<-adinr$minimize()
+#results<-nlminb(start =x,objective=adinr$evaluate, gradient=adinr$gradient)
+print(results)
 
 adinr$clear()

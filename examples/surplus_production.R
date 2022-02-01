@@ -47,11 +47,12 @@ q$set_value(0.5)
 k<-adinr$parameter()
 k$set_value(0.5)
 
+predictedCPUE<-make_variable_list(nobs)
 
 #OBJECTIVE FUNCTION
 adinr$set_recording(TRUE)
 
-predictedCPUE<-make_variable_list(nobs)
+
 
 # shaeffer<-function(){
 #   
