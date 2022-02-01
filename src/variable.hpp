@@ -1,5 +1,5 @@
 /*
- * File:   fims_math.hpp
+ * File:   variable.hpp
  *
  * Author: Matthew Supernaw
  * National Oceanic and Atmospheric Administration

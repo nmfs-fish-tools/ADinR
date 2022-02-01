@@ -34,7 +34,7 @@ b$set_value(1.0)
 c<-adinr$parameter()
 c$set_value(1.0)
 
-
+adinr$set_recording(TRUE)
 
 #objective function
 norm2<-adinr$variable()
@@ -50,7 +50,19 @@ f<-(nobs/2.0) * log(norm2)
 
 
 #minimize the objective function
-results<-adinr$minimize()
+ results<-nlminb(start =adinr$parameter_values(),
+                 objective=adinr$evaluate, 
+                 gradient=adinr$gradient)
+print(results)
 
-results
+for(i in 1:nobs){
+  pred_Y<- a*exp(-1.0*exp(b-c*x[i]))
+  predicted[i]<-pred_Y$value()
+}
+
+plot.new()
+plot(x=x, y=y)
+lines(x,predicted)
+
+adinr$clear()
 

@@ -252,10 +252,11 @@ bool line_search(
         std::valarray<double>& gradient,
         std::valarray<double>& wg,
         double& maxgc, int& i,
+        int& max_iterations.
         bool inner = true) {
 
 
-    int max_iterations = 1000;
+//    int max_iterations = 1000;
     double tolerance = 1e-4;
     int max_line_searches = 500;
     double descent = 0;
@@ -295,7 +296,7 @@ bool line_search(
 
 
     for (int j = 0; j < nops; j++) {
-        best[j] = variable::tape_g.independent_variables[j]->value;
+        best[j] = variable::tape_g.independent_variables[j]->internal_value();
     }
 
     //            atl::Variable<T> fx;
@@ -303,10 +304,10 @@ bool line_search(
     for (ls = 0; ls < max_line_searches; ++ls) {
 
 
-        if ((ls % 10) == 0) {
-            std::cout << "Line search iteration " << ls << "\n";
-            std::cout << "f = " << fx << "\n";
-        }
+//        if ((ls % 10) == 0) {
+//            std::cout << "Line search iteration " << ls << "\n";
+//            std::cout << "f = " << fx << "\n";
+//        }
 
         // Tentative solution, gradient and loss
         std::valarray<double> nx = x - step * z;
@@ -367,7 +368,7 @@ bool line_search(
     }
 
     for (size_t j = 0; j < nops; j++) {
-        variable::tape_g.independent_variables[j]->value = (best[j]);
+        variable::tape_g.independent_variables[j]->update_value(best[j]);
     }
 
     return false;
@@ -530,7 +531,9 @@ Rcpp::List lbfgs(Rcpp::Nullable<Rcpp::List> control = R_NilValue) {
                 gradient,
                 wg,
                 maxgc,
-                iteration, false)) {
+                iteration,
+                max_iterations,
+                false)) {
             std::cout << "Max line searches";
             end = std::chrono::system_clock::now();
             std::chrono::duration<double> elapsed_seconds = end - start;

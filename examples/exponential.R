@@ -30,6 +30,7 @@ k<-adinr$parameter()
 k$set_value(0.0)
 
 adinr$set_recording(TRUE)
+
 #objective function
 norm2<-adinr$variable()
 
@@ -43,8 +44,12 @@ f<-(nobs/2.0) * log(norm2)
 
 
 
+
 #minimize the objective function
-results<-adinr$minimize()
+results<-nlminb(start = adinr$parameter_values(),
+                objective=adinr$evaluate, 
+                gradient=adinr$gradient)
+print(results)
 
 for(i in 1:nobs){
   pred_Y<-pred_Y<- a * exp(k * x[i])

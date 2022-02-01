@@ -48,7 +48,6 @@ empirical_waa<-om_input[["W.kg"]]
 #beverton-holt recruitment model
 log_R0<-adinr$variable()
 log_R0$set_value(log(1e+06))
-# log_R0$bounds(log(1e+04),log(1e+07))
 
 h<-adinr$variable()
 h$set_value(om_input[["h"]])
@@ -277,8 +276,10 @@ objective_function<-function(){
 
 f<-objective_function()
 
-adinr$parameter_values()
+x<-adinr$parameter_values()
 #fit the model
-results<-adinr$minimize()
+# results<-adinr$minimize()
+results<-nlminb(start =x,objective=adinr$evaluate, gradient=adinr$gradient)
 results
+
 adinr$clear()
