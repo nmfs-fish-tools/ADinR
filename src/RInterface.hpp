@@ -252,7 +252,7 @@ bool line_search(
         std::valarray<double>& gradient,
         std::valarray<double>& wg,
         double& maxgc, int& i,
-        int& max_iterations.
+        int& max_iterations,
         bool inner = true) {
 
 
