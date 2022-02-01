@@ -46,41 +46,41 @@ empirical_waa<-om_input[["W.kg"]]
 #PARAMETERS
 
 #beverton-holt recruitment model
-log_R0<-adinr$variable()
-log_R0$set_value(log(1e+06))
+log_R0<-adinr$parameter()
+log_R0$set_value(log(om_input[["R0"]]/1000))
 
 h<-adinr$variable()
 h$set_value(om_input[["h"]])
 
 recruitment_deviation<-list()
 for(i in 1:nyears){
-    recruitment_deviation[[i]]<-adinr$variable()
+    recruitment_deviation[[i]]<-adinr$parameter()
     recruitment_deviation[[i]]$set_value(0.5)
     recruitment_deviation[[i]]$bounds(-10,10)
 }
 
 #virgin spawning biomass
 log_S0<-adinr$variable()
-log_S0$set_value(log(9557.836))
+log_S0$set_value(log(om_input$R0 * om_input$Phi.0))
 
 #initial numbers
 initial_numbers<-list()
 for(i in 1:nages){
     initial_numbers[[i]]<-adinr$variable()
-    initial_numbers[[i]]$set_value(1e+04)
+    initial_numbers[[i]]$set_value(500)
 }
 
 initial_deviations<-list()
 for(i in 1:nages){
-    initial_deviations[[i]]<-adinr$parameter()
+    initial_deviations[[i]]<-adinr$variable()
     initial_deviations[[i]]$set_value(0.5)
 }
 
 #logistic selectivity
-slope<-adinr$parameter()
+slope<-adinr$variable()
 slope$set_value(om_input[["sel_fleet"]][["fleet1"]][["slope.sel"]])
 slope$bounds(0.0001,nages)
-a50<-adinr$parameter()
+a50<-adinr$variable()
 a50$set_value(om_input[["sel_fleet"]][["fleet1"]][["A50.sel"]])
 a50$bounds(0.0001,nages)
 
@@ -153,6 +153,20 @@ reset_ssb<-function(){
     }
 }
 
+reset_abundance<-function(){
+    for(i in 1:nyears){
+        predicted_catch_abundance[[i]]$set_value(0.0)
+    }
+}
+
+reset_naa<-function(){
+    for(y in 1:nyears){
+        for( a in 1:nages){
+            N[[y]][[a]]$set_value(0.0)
+        }
+    }
+}
+
 get_selectivity<-function(age){
     return((1.0) / ((1.0) + exp(-1.0 * (om_input[["ages"]][[age]] - a50) / slope)))
 }
@@ -181,11 +195,14 @@ calculate_numbers_at_age<-function(year,age){
             N[[year]][[age]]<<-(N[[year]][[age]] + N[[year]][[age-1]] * exp(-1.0 * Z[[year]][[age-1]]))
         }
     }
+
 }
 
-calculate_spawning_biomass<-function(year,age){
-    SSB[[year]]<<-(SSB[[year]]+(exp(-1.0 * Z[[year]][[age]]))*N[[year]][[age]])
-
+calculate_spawning_biomass<-function(year){
+    for(a in 1:nages){
+        fecundity<-maturity[[a]]*empirical_waa[[a]]
+        SSB[[year]]<<-(SSB[[year]]+((exp(-1.0 * Z[[year]][[a]]))*N[[year]][[a]])*fecundity)
+    }
 }
 
 calculate_recruitment<-function(year){
@@ -210,6 +227,7 @@ calculate_catch_composition<-function(){
         for(a in 1:nages){
             sum<-sum+C[[y]][[a]]
         }
+
         for(a in 1:nages){
             predicted_age_composition[[y]][[a]]<<-C[[y]][[a]]/sum
         }
@@ -254,13 +272,17 @@ calculate_index_of_abundance_likelihood<-function(){
 
 objective_function<-function(){
     reset_ssb()
-
+    reset_abundance()
+    reset_naa()
     for(y in 1:(nyears)){
-        calculate_recruitment(y)
+
         for(a in 1:nages){
             calculate_mortality(y,a)
             calculate_numbers_at_age(y,a)
-            calculate_spawning_biomass(y,a)
+            if(a == nages){
+                calculate_spawning_biomass(y)
+                calculate_recruitment(y)
+            }
             calculate_catch_at_age(y,a)
         }
     }
@@ -281,5 +303,13 @@ x<-adinr$parameter_values()
 results<-adinr$minimize()
 #results<-nlminb(start =x,objective=adinr$evaluate, gradient=adinr$gradient)
 print(results)
+
+print(log_R0$value())
+for(y in 1:nyears){
+    print(paste("year = ",y))
+    for(a in 1:nages){
+        print(N[[y]][[a]]$value())
+    }
+}
 
 adinr$clear()

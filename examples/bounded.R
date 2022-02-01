@@ -19,6 +19,7 @@ y<-c(1.957e-1, 1.947e-1, 1.735e-1, 1.6e-1, 8.44e-2, 6.27e-2,
 4.56e-2, 3.42e-2, 3.23e-2, 2.35e-2, 2.46e-2)
 
 init_values <- c(2.5, 3.9, 4.15, 3.9)
+
 nobs<-length(y)
 
 #estimated independent variables
@@ -38,11 +39,10 @@ x3<-adinr$parameter()
 x3$set_value(3.9)
 x3$bounds(0,100)
 
+adinr$set_recording(TRUE)
+
 #least squares objective function
 norm2<-adinr$variable()
-predicted <- c(1:length(x))
-
-adinr$set_recording(TRUE)
 
 for(i in 1:nobs){
   pred_Y<- x0 * (pow(u[[i]],2) + x1 * u[[i]]) / (pow(u[[i]],2) + x2* u[[i]] + x3)
@@ -55,13 +55,17 @@ f<-norm2
 #minimize the objective function
 results<-adinr$minimize()
 
+predicted <- c(1:nobs)
 
 for(i in 1:nobs){
-  pred_Y<-pred_Y<- a * exp(k * x[i])
+  pred_Y<-x0 * (pow(u[[i]],2) + x1 * u[[i]]) / (pow(u[[i]],2) + x2* u[[i]] + x3)
   predicted[i]<-pred_Y$value()
 }
-plot.new()
-plot(x=x, y=y)
-lines(x,predicted)
 
-results
+
+plot.new()
+plot(x=u_values, y=y)
+lines(u_values,predicted)
+
+
+print(results)
