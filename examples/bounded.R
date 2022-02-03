@@ -55,6 +55,8 @@ f<-norm2
 
 control<-list()
 control["max_iterations"]<-3000
+control["iprint"]<-10
+control["verbose"]<-FALSE
 #minimize the objective function
 results<-adinr$minimize(control)
 

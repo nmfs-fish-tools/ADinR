@@ -395,15 +395,15 @@ Rcpp::List lbfgs(Rcpp::Nullable<Rcpp::List> control = R_NilValue) {
             max_iterations = maxi;
         }
         
-        int print_interval = ctrl["iprint"];
-        if(print_interval != 0){
-            iprint = print_interval;
-        }
-        
-        bool is_verbose = ctrl["verbose"];
-        if(!is_verbose){
-            verbose = false;
-        }
+//        int print_interval = ctrl["iprint"];
+//        if(print_interval != 0){
+//            iprint = print_interval;
+//        }
+//        
+//        bool is_verbose = ctrl["verbose"];
+//        if(!is_verbose){
+//            verbose = false;
+//        }
         
     //    it = ctrl.
     //    if (control.isNotNull()) {
