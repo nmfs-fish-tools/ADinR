@@ -386,8 +386,13 @@ Rcpp::List lbfgs(Rcpp::Nullable<Rcpp::List> control = R_NilValue) {
     double maxgc;
     Rcpp::List results;
 
-    //    Rcpp::List ctrl(control);
-    //    Rcpp::List::iterator it;
+//    Rcpp::List crs = sfc.attr("crs");
+        Rcpp::List ctrl(control);
+        double maxi = ctrl["max_iterations"];
+        if(maxi != 0){
+            max_iterations = maxi;
+        }
+        
     //    it = ctrl.
     //    if (control.isNotNull()) {
     //        //        it = ctrl["gtol"];
