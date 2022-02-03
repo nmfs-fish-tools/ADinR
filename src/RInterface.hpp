@@ -388,7 +388,7 @@ Rcpp::List lbfgs(Rcpp::Nullable<Rcpp::List> control = R_NilValue) {
     int iprint = 10;
     Rcpp::List results;
 
-    //    Rcpp::List crs = sfc.attr("crs");
+
     Rcpp::List ctrl(control);
     if (ctrl.containsElementNamed("max_iterations")) {
         double maxi = ctrl["max_iterations"];
@@ -397,18 +397,23 @@ Rcpp::List lbfgs(Rcpp::Nullable<Rcpp::List> control = R_NilValue) {
         }
     }
 
+    if (ctrl.containsElementNamed("tolerance")) {
+        double t = ctrl["tolerance"];
+        tolerance = t;
+    }
+
     if (ctrl.containsElementNamed("iprint")) {
         int print_interval = ctrl["iprint"];
         if (print_interval != 0) {
             iprint = print_interval;
         }
     }
-      if (ctrl.containsElementNamed("verbose")) {
+    if (ctrl.containsElementNamed("verbose")) {
         bool is_verbose = ctrl["verbose"];
         if (!is_verbose) {
-            verbose = false;
+            verbose = is_verbose;
         }
-      }
+    }
     //    it = ctrl.
     //    if (control.isNotNull()) {
     //        //        it = ctrl["gtol"];

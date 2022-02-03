@@ -54,11 +54,13 @@ for(i in 1:nobs){
 f<-norm2
 
 control<-list()
-control["max_iterations"]<-3000
+control["max_iterations"]<-500
 control["iprint"]<-10
-control["verbose"]<-FALSE
+control["verbose"]<-TRUE
 #minimize the objective function
 results<-adinr$minimize(control)
+
+adinr$set_recording(FALSE)
 
 predicted <- c(1:nobs)
 

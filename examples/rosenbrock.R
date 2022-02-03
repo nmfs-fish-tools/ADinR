@@ -78,10 +78,15 @@ norm2<-adinr$variable()
 
 f<- (nobs*0.5)*log(norm2)
 
-cntrl<-list()
-cntrl["max_iterations"]<-5000
-results<-adinr$minimize(cntrl)
+control<-list()
+control["max_iterations"]<-3000
+control["iprint"]<-10
+control["verbose"]<-TRUE
 
+#l-bfgs minimizer
+results<-adinr$minimize(control)
+
+#print results
 for(i in 1:(nobs)){
     cat(paste(paste(paste(pred_y[[i]]$value(), "\t"), y[i])),"\n")
 }
@@ -90,6 +95,8 @@ predicted <- c(1:nobs)
 for(i in 1:nobs){
   predicted[i]<-pred_y[[i]]$value()
 }
+
+adinr$clear()
 
 print(results)
 #plot.new()
