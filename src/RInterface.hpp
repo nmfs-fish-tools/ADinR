@@ -256,7 +256,7 @@ bool line_search(
         bool inner = true) {
 
 
-//    int max_iterations = 1000;
+    //    int max_iterations = 1000;
     double tolerance = 1e-4;
     int max_line_searches = 500;
     double descent = 0;
@@ -304,10 +304,10 @@ bool line_search(
     for (ls = 0; ls < max_line_searches; ++ls) {
 
 
-//        if ((ls % 10) == 0) {
-//            std::cout << "Line search iteration " << ls << "\n";
-//            std::cout << "f = " << fx << "\n";
-//        }
+        //        if ((ls % 10) == 0) {
+        //            std::cout << "Line search iteration " << ls << "\n";
+        //            std::cout << "f = " << fx << "\n";
+        //        }
 
         // Tentative solution, gradient and loss
         std::valarray<double> nx = x - step * z;
@@ -388,23 +388,27 @@ Rcpp::List lbfgs(Rcpp::Nullable<Rcpp::List> control = R_NilValue) {
     int iprint = 10;
     Rcpp::List results;
 
-//    Rcpp::List crs = sfc.attr("crs");
-        Rcpp::List ctrl(control);
+    //    Rcpp::List crs = sfc.attr("crs");
+    Rcpp::List ctrl(control);
+    if (ctrl.containsElementNamed("max_iterations")) {
         double maxi = ctrl["max_iterations"];
-        if(maxi != 0){
+        if (maxi != 0) {
             max_iterations = maxi;
         }
-        
-//        int print_interval = ctrl["iprint"];
-//        if(print_interval != 0){
-//            iprint = print_interval;
-//        }
-//        
-//        bool is_verbose = ctrl["verbose"];
-//        if(!is_verbose){
-//            verbose = false;
-//        }
-        
+    }
+
+    if (ctrl.containsElementNamed("iprint")) {
+        int print_interval = ctrl["iprint"];
+        if (print_interval != 0) {
+            iprint = print_interval;
+        }
+    }
+      if (ctrl.containsElementNamed("verbose")) {
+        bool is_verbose = ctrl["verbose"];
+        if (!is_verbose) {
+            verbose = false;
+        }
+      }
     //    it = ctrl.
     //    if (control.isNotNull()) {
     //        //        it = ctrl["gtol"];
