@@ -384,6 +384,8 @@ Rcpp::List lbfgs(Rcpp::Nullable<Rcpp::List> control = R_NilValue) {
     double tolerance = 1e-4;
     double function_value;
     double maxgc;
+    bool verbose = true;
+    int iprint = 10;
     Rcpp::List results;
 
 //    Rcpp::List crs = sfc.attr("crs");
@@ -391,6 +393,16 @@ Rcpp::List lbfgs(Rcpp::Nullable<Rcpp::List> control = R_NilValue) {
         double maxi = ctrl["max_iterations"];
         if(maxi != 0){
             max_iterations = maxi;
+        }
+        
+        int print_interval = ctrl["iprint"];
+        if(print_interval != 0){
+            iprint = print_interval;
+        }
+        
+        bool is_verbose = ctrl["verbose"];
+        if(!is_verbose){
+            verbose = false;
         }
         
     //    it = ctrl.
@@ -459,7 +471,7 @@ Rcpp::List lbfgs(Rcpp::Nullable<Rcpp::List> control = R_NilValue) {
             //                    this->parameters_m[j]->GetInternalValue()) * this->gradient[j];
         }
 
-        if ((i % 10) == 0) {
+        if (((i % iprint) == 0) && verbose) {
             std::cout << "Iteration " << i << "\n";
             std::cout << "f = " << fx << ", maxgc = " << maxgc << "\n";
         }

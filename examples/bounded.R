@@ -1,3 +1,5 @@
+remotes::install_github("nmfs-fish-tools/ADinR")
+
 library(Rcpp)
 library(nloptr)
 library(ADinR)
@@ -51,9 +53,10 @@ for(i in 1:nobs){
 
 f<-norm2
 
-
+control<-list()
+control["max_iterations"]<-3000
 #minimize the objective function
-results<-adinr$minimize()
+results<-adinr$minimize(control)
 
 predicted <- c(1:nobs)
 
@@ -62,10 +65,8 @@ for(i in 1:nobs){
   predicted[i]<-pred_Y$value()
 }
 
-
 plot.new()
 plot(x=u_values, y=y)
 lines(u_values,predicted)
-
 
 print(results)
