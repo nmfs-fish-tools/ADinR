@@ -4,8 +4,24 @@ library(Rcpp)
 library(nloptr)
 library(ADinR)
 
+
+
 #load the adinr module
 adinr<-Rcpp::Module("adinr", PACKAGE="ADinR")
+
+ad_matrix<-function(nrow, ncol){
+  slots <- matrix(list(), ncol, nrow)
+  for(i in 1:nrow){
+    for(j in 1:ncol){
+      slots[[i,j]]<-adinr$variable()
+    }
+  }
+  return(slots)
+}
+m<-ad_matrix(5,5)
+n<-ad_matrix(5,5)
+p<-m*n
+print(m[[1,1]]$value())
 
 #helper function
 make_variable_list<-function(length){

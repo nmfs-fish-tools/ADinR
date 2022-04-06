@@ -64,10 +64,11 @@ log_S0<-adinr$variable()
 log_S0$set_value(log(om_input$R0 * om_input$Phi.0))
 
 #initial numbers
+i_n<-c(993947.5,811707.8,661434.4,537804.8,436664.0,354303.35,287396.97,1237221.2,811707.8,661434.4,537804.8,436664.0)
 initial_numbers<-list()
 for(i in 1:nages){
     initial_numbers[[i]]<-adinr$variable()
-    initial_numbers[[i]]$set_value(500)
+    initial_numbers[[i]]$set_value(i_n[i]/1000)
 }
 
 initial_deviations<-list()
@@ -172,6 +173,7 @@ get_selectivity<-function(age){
 }
 
 get_recruitment<-function(SB0, sb){
+    # return ( 4.0 * h * exp(log_R0) * sb) / (SB0 * (1.0 - h) + sb * (5.0 * h - 1.0))
     return(( 4.0 * h * exp(log_R0) * sb) / (SB0*(1.0 - h) + sb * (5.0 * h - 1.0)))
 }
 
@@ -179,7 +181,11 @@ calculate_mortality<-function(year,age){
 
        Z[[year]][[age]]<<-(fishing_mortality[[year]]*get_selectivity(age)+natural_mortality[[age]])
        f_at_age[[year]][[age]]<<-fishing_mortality[[year]]*get_selectivity(age)
-       S[[year]][[age]]<<-exp(-1.0*Z[[year]][[age]])
+       if(age == 1){
+           S[[year]][[age]]<<- 1.0
+       }else{
+           S[[year]][[age]]<<-exp(-1.0*Z[[year]][[age]])
+       }
 }
 
 
@@ -191,8 +197,8 @@ calculate_numbers_at_age<-function(year,age){
         if(age > 1){
             N[[year]][[age]]<<-(N[[year-1]][[age-1]]*exp(-1.0 * Z[[year-1]][[age-1]]))
         }
-        if(age == nages){
-            N[[year]][[age]]<<-(N[[year]][[age]] + N[[year]][[age-1]] * exp(-1.0 * Z[[year]][[age-1]]))
+        if(age == nages && year > 1){
+            N[[year]][[age]]<<-(N[[year]][[age]] + N[[year-1]][[age]] * exp(-1.0 * Z[[year-1]][[age]]))
         }
     }
 
@@ -209,7 +215,7 @@ calculate_recruitment<-function(year){
     if(year == 1){
         recruitment[[year]]<<-initial_numbers[[1]]
     }else{
-     recruitment[[year]]<<-get_recruitment(exp(log_S0),SSB[[year]])+recruitment_deviation[[year]]
+     recruitment[[year]]<<-get_recruitment(exp(log_S0),SSB[[year]]/1000)+recruitment_deviation[[year]]
     }
     N[[year]][[1]]<<-recruitment[[year]]#first age group
    
@@ -277,8 +283,10 @@ objective_function<-function(){
     for(y in 1:(nyears)){
 
         for(a in 1:nages){
+            
             calculate_mortality(y,a)
             calculate_numbers_at_age(y,a)
+            
             if(a == nages){
                 calculate_spawning_biomass(y)
                 calculate_recruitment(y)
@@ -308,7 +316,7 @@ print(log_R0$value())
 for(y in 1:nyears){
     print(paste("year = ",y))
     for(a in 1:nages){
-        print(N[[y]][[a]]$value())
+        cat(paste(N[[y]][[a]]$value(), "  "))
     }
 }
 

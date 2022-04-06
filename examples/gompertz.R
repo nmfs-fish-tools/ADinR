@@ -39,7 +39,7 @@ adinr$set_recording(TRUE)
 #objective function
 norm2<-adinr$variable()
 
-predicted <- c(1:length(x))
+
 for(i in 1:nobs){
   pred_Y<- a*exp(-1.0*exp(b-c*x[i]))
   norm2<-norm2 + pow(y[i]-pred_Y,2.0)
@@ -55,6 +55,7 @@ f<-(nobs/2.0) * log(norm2)
                  gradient=adinr$gradient)
 print(results)
 
+predicted <- c(1:length(x))
 for(i in 1:nobs){
   pred_Y<- a*exp(-1.0*exp(b-c*x[i]))
   predicted[i]<-pred_Y$value()

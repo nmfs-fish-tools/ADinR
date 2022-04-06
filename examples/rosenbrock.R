@@ -82,7 +82,7 @@ control<-list()
 control["max_iterations"]<-3000
 control["iprint"]<-10
 control["verbose"]<-TRUE
-
+control["tolerance"]<-1e-8
 #l-bfgs minimizer
 results<-adinr$minimize(control)
 

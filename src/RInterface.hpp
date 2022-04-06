@@ -386,6 +386,7 @@ Rcpp::List lbfgs(Rcpp::Nullable<Rcpp::List> control = R_NilValue) {
     double maxgc;
     bool verbose = true;
     int iprint = 10;
+    bool converged = false;
     Rcpp::List results;
 
 
@@ -398,8 +399,8 @@ Rcpp::List lbfgs(Rcpp::Nullable<Rcpp::List> control = R_NilValue) {
     }
 
     if (ctrl.containsElementNamed("tolerance")) {
-        double t = ctrl["tolerance"];
-        tolerance = t;
+        double tol = ctrl["tolerance"];
+        tolerance = tol;
     }
 
     if (ctrl.containsElementNamed("iprint")) {
@@ -546,7 +547,9 @@ Rcpp::List lbfgs(Rcpp::Nullable<Rcpp::List> control = R_NilValue) {
         }//end for
 
 
-
+        
+        
+        
         double fv = function_value;
         if (!line_search(
                 fx,
@@ -567,7 +570,12 @@ Rcpp::List lbfgs(Rcpp::Nullable<Rcpp::List> control = R_NilValue) {
                 rgrad[j] = gradient[j];
                 rx[j] = variable::tape_g.independent_variables[j]->value;
             }
-            results["converged"] = false;
+            
+            if(maxgc<= tolerance){
+                converged = true;
+            }
+            
+            results["converged"] = converged;
             results["iterations"] = iteration;
             results["runtime (seconds)"] = elapsed_seconds.count();
             results["function value"] = fx;
@@ -578,6 +586,7 @@ Rcpp::List lbfgs(Rcpp::Nullable<Rcpp::List> control = R_NilValue) {
             return results;
 
         }
+        
         if ((fv - function_value) == 0.0 && no_progress_count == 15) {
             std::cout << "Not progressing...bailing out!\n";
             end = std::chrono::system_clock::now();
@@ -586,7 +595,12 @@ Rcpp::List lbfgs(Rcpp::Nullable<Rcpp::List> control = R_NilValue) {
                 rgrad[j] = gradient[j];
                 rx[j] = variable::tape_g.independent_variables[j]->value;
             }
-            results["converged"] = false;
+            
+            
+            if(maxgc<= tolerance){
+                converged = true;
+            }
+            results["converged"] = converged;
             results["iterations"] = iteration;
             results["runtime (seconds)"] = elapsed_seconds.count();
             results["function value"] = fx;
@@ -606,8 +620,12 @@ Rcpp::List lbfgs(Rcpp::Nullable<Rcpp::List> control = R_NilValue) {
         rgrad[j] = gradient[j];
         rx[j] = variable::tape_g.independent_variables[j]->value;
     }
+    
+    if(maxgc<= tolerance){
+        converged = true;
+    }
 
-    results["converged"] = false;
+    results["converged"] = converged;
     results["iterations"] = i;
     results["runtime (seconds)"] = elapsed_seconds.count();
     results["function value"] = fx;
