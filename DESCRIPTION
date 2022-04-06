@@ -7,7 +7,6 @@ LazyData: true
 Depends: R (>= 4.0.0)
 StagedInstall: no
 Imports:
-    jsonlite,
     Rcpp
 LinkingTo: 
     Rcpp
