@@ -36,6 +36,7 @@
 #include "tape.hpp"
 //#include "operators.hpp"
 
+// [[Rcpp::export]]
 class variable {
 public:
     static tape tape_g;
