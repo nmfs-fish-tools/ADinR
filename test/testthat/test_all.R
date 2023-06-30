@@ -375,7 +375,7 @@ test_that("powvv", {
   y$set_value(1.0)
   adinr$set_recording(TRUE)
   
-  f<-adinr$powvv(x,y)
+  f<-pow(x,y)
   gradient<-adinr$gradient(c(1,1))
   expect_equal(gradient[1], 1, 1e-4)
   expect_equal(gradient[2], 0, 1e-4)
@@ -391,7 +391,7 @@ test_that("powvd", {
   y$set_value(1.0)
   adinr$set_recording(TRUE)
   
-  f<-adinr$powvd(x, 2.0)
+  f<-pow(x, 2.0)
   gradient<-adinr$gradient(c(1,1))
   expect_equal(gradient[1], 2, 1e-4)
   expect_equal(gradient[2], 0, 1e-4)
@@ -407,8 +407,10 @@ test_that("powdv", {
   y$set_value(1.0)
   adinr$set_recording(TRUE)
   
-  f<-adinr$powdv(2.0,x)
+  f<-pow(2.0,x)
   gradient<-adinr$gradient(c(1,1))
   expect_equal(gradient[1], 1.38629, 1e-4)
   expect_equal(gradient[2], 0, 1e-4)
 })
+
+

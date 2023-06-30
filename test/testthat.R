@@ -7,4 +7,5 @@ library(Rcpp)
 library(ADinR)
 #load the adinr module
 adinr<-Rcpp::Module("adinr", PACKAGE="ADinR")
+
 test_check("ADinR")
