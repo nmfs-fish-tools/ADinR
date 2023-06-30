@@ -1,8 +1,8 @@
-.onLoad <- function(libname, pkgname) {
-  print("loading ADinR")
- # library.dynam("ADinR", pkgname, libname)
- # source(ADinR/R/ops/operators.hpp)
-}
+# .onLoad <- function(libname, pkgname) {
+#   print("loading ADinR...")
+#   library.dynam("ADinR", pkgname, libname)
+#  # source(ADinR/R/ops/operators.hpp)
+# }
 
 
 

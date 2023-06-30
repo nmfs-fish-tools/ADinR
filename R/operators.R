@@ -1,9 +1,17 @@
-library(methods)
+#library(methods)
 
 
 
 setGeneric("pow", function(e1,e2)
   standardGeneric("pow"))
+
+setMethod("pow", signature(e1 = "Rcpp_variable", e2 = "Rcpp_variable"), function (e1, e2)
+  adinr$powvv(e1, e2))
+setMethod("pow", signature(e1 = "Rcpp_variable", e2 = "numeric"), function (e1, e2)
+  adinr$powvd(e1, e2))
+setMethod("pow", signature(e1 = "numeric", e2 = "Rcpp_variable"), function (e1, e2)
+  adinr$powdv(e1, e2))
+
 # setGeneric("acos", function(e1)
 #   standardGeneric("acos"))
 # setGeneric("asin", function(e1)
@@ -44,6 +52,9 @@ setMethod("Ops", signature(e1 = "numeric", e2 = "Rcpp_variable"),
 # setMethod("Math", signature(e1 = "numeric", e2 = "Rcpp_variable"),
 #           function(e1, e2) callGeneric(e1, e2))
 
+#pow
+#/
+
 
 #+
 setMethod("+", signature(e1 = "Rcpp_variable", e2 = "Rcpp_variable"), function (e1, e2){
@@ -80,14 +91,7 @@ setMethod("/", signature(e1 = "numeric", e2 = "Rcpp_variable"), function (e1, e2
 
 
 
-#pow
-#/
-setMethod("pow", signature(e1 = "Rcpp_variable", e2 = "Rcpp_variable"), function (e1, e2)
-  adinr$powvv(e1, e2))
-setMethod("pow", signature(e1 = "Rcpp_variable", e2 = "numeric"), function (e1, e2)
-  adinr$powvd(e1, e2))
-setMethod("pow", signature(e1 = "numeric", e2 = "Rcpp_variable"), function (e1, e2)
-  adinr$powdv(e1, e2))
+
 
 
 # setMethod("Math", c(x="Rcpp_variable"),

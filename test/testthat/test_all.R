@@ -370,7 +370,7 @@ test_that("powvv", {
   adinr$clear()
   x<-adinr$parameter()
   x$set_value(1.0)
-  
+  x
   y<-adinr$parameter()
   y$set_value(1.0)
   adinr$set_recording(TRUE)
