@@ -523,6 +523,18 @@ const variable powdv(const double& left,
 }
 
 
+// 
+// // [[Rcpp::export]]
+// const variable pow(double a, variable b){
+//   return powdv(a,b);
+// }
+// // 
+// // [[Rcpp::export]]
+// const variable pow(variable a, variable b){
+//   return powvv(a,b);
+// }
+
+
 
 
 

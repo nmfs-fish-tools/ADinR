@@ -36,7 +36,8 @@
 #include "tape.hpp"
 //#include "operators.hpp"
 
-// [[Rcpp::export]]
+
+
 class variable {
 public:
     static tape tape_g;
@@ -47,6 +48,11 @@ public:
         this->set_value(value);
     }
 
+    variable(SEXP value)
+      : info(std::make_shared<variable_info >()) {
+      this->set_value(Rcpp::as<double>(value));
+    }
+    
     variable(const std::shared_ptr<variable_info >& other)
     : info(other) {
     }
@@ -81,7 +87,7 @@ public:
     }
 
     void set_value(double v) {
-        if (variable::tape_g.recording) {
+        if (variable::tape_g.recording && this->info->independent != true) {
             std::shared_ptr<assignment_operator> ret = std::make_shared<assignment_operator>();
             ret->dependent = this->info;
             ret->v = v;

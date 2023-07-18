@@ -1,11 +1,16 @@
 Package: ADinR
+Title: Automatic Differentiation in R
 Type: Package
+Author: Matthew Supernaw
+Maintainer: Matthew Supernaw <matthew.supernaw@noaa.gov>
+Description: Reverse-mode automatic differentiation in R using R code.
 License: GPL-3
 Version: 0.1.0
 Encoding: UTF-8
 LazyData: true
 Depends: R (>= 4.0.0)
 StagedInstall: no
+NeedsCompilation: yes
 Imports:
     Rcpp,
     methods,

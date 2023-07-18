@@ -1,4 +1,4 @@
-remotes::install_github("nmfs-fish-tools/ADinR")
+# remotes::install_github("nmfs-fish-tools/ADinR")
 
 library(Rcpp)
 library(nloptr)
@@ -27,7 +27,7 @@ make_variable_list<-function(length){
     return(l)
 }
 
-setwd("/Users/mattadmin/ADinR/examples")
+# setwd("/Users/mattadmin/ADinR/examples")
 
 load("catch_at_age.RData")
 

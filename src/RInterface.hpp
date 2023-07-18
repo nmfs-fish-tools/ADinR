@@ -24,16 +24,17 @@
 
 //
 
-RCPP_EXPOSED_CLASS(variable)
+
 
 
 void make_estimable(variable& par) {
     variable::tape_g.independent_variables.push_back(par.info);
 }
 
-variable parameter() {
+const variable parameter() {
     variable v;
     variable::tape_g.independent_variables.push_back(v.info);
+    v.info->independent = true;
     return v;
 }
 
@@ -184,6 +185,7 @@ void clear() {
     variable::tape_g.gradient.clear();
     variable::tape_g.independent_variables.clear();
     variable::tape_g.stack.clear();
+    variable::tape_g.recording = false;
     variable_info::id_g = 0;
 }
 
@@ -638,6 +640,8 @@ Rcpp::List lbfgs(Rcpp::Nullable<Rcpp::List> control = R_NilValue) {
     return results;
 }
 
+RCPP_EXPOSED_CLASS(variable)
+
 RCPP_MODULE(adinr) {
     using namespace Rcpp;
     class_<variable >("variable")
@@ -697,6 +701,272 @@ RCPP_MODULE(adinr) {
     function("set_recording", &set_recording);
     function("is_recording", &is_recording);
     function("show", &show);
+}
+
+bool isVariable(SEXP s)
+{
+  SEXP klass;
+  int i;
+  if (OBJECT(s)) {
+    klass = Rf_getAttrib(s, R_ClassSymbol);
+    for (i = 0; i <  Rf_length(klass); i++)
+      if (!strcmp(CHAR(STRING_ELT(klass, i)), "Rcpp_variable")) return TRUE;
+  }
+  return FALSE;
+}
+
+
+/**
+ * Top level functions.
+ */
+  
+  // [[Rcpp::export]]
+void MakeEstimable(SEXP v) {
+    if(isVariable(v)){
+    variable::tape_g.independent_variables.push_back(Rcpp::as<variable>(v).info);
+      Rcpp::as<variable>(v).info->independent = true;
+    }else{
+      Rcpp::stop("Unknown argument type for MakeEstimable function.");
+    }
+  }
+
+// [[Rcpp::export]]
+const SEXP Variable(){
+  variable v;
+  return Rcpp::wrap(v);
+}
+
+// [[Rcpp::export]]
+const SEXP Parameter(){
+  variable v;
+  variable::tape_g.independent_variables.push_back(v.info);
+  v.info->independent = true;
+    return Rcpp::wrap(v);
+}
+
+// [[Rcpp::export]]
+SEXP GetValues() {
+  Rcpp::NumericVector ret(variable::tape_g.independent_variables.size());
+  for (int i = 0; i < variable::tape_g.independent_variables.size(); i++) {
+    ret[i] = variable::tape_g.independent_variables[i]->value;
+  }
+  return Rcpp::wrap(ret);
+}
+
+// [[Rcpp::export]]
+void Show(SEXP v) {
+  if(isVariable(v)){
+    variable V = Rcpp::as<variable>(v);
+    Rcpp::Rcout << V.value() << std::endl;
+  }
+}
+
+// [[Rcpp::export]]
+const SEXP Gradient(Rcpp::NumericVector x){
+  Rcpp::NumericVector ret(variable::tape_g.independent_variables.size());
+  if (x.size() != ret.size()) {
+    std::cout << "Error in gradient function: x vector size not equal to independent variable size.\n";
+  } else {
+    for (int i = 0; i < variable::tape_g.independent_variables.size(); i++) {
+      variable::tape_g.independent_variables[i]->value = x[i];
+    }
+    variable::tape_g.forward();
+    variable::tape_g.reverse();
+    for (int i = 0; i < variable::tape_g.independent_variables.size(); i++) {
+      ret[i] = variable::tape_g.gradient[variable::tape_g.independent_variables[i]->id];
+    }
+  }
+  
+  return Rcpp::wrap(ret);
+}
+
+// [[Rcpp::export]]
+void Clear() {
+  variable::tape_g.gradient.clear();
+  variable::tape_g.independent_variables.clear();
+  variable::tape_g.stack.clear();
+  variable::tape_g.recording = false;
+  variable_info::id_g = 0;
+}
+
+// [[Rcpp::export]]
+void SetRecording(bool record){
+  variable::tape_g.recording = record;
+}
+
+// [[Rcpp::export]]
+const SEXP ACos(const SEXP& x){
+  if(isVariable(x)){
+    variable v = ad_acos(Rcpp::as<variable>(x));
+    return Rcpp::wrap(v);
+  }
+  Rcpp::stop("Unknown argument type for ACos function.");
+  return NULL;
+}
+
+// [[Rcpp::export]]
+const SEXP ASin(SEXP x){
+  if(isVariable(x)){
+    return Rcpp::wrap(ad_asin(Rcpp::as<variable>(x)));
+  }
+  Rcpp::stop("Unknown argument type for ASin function.");
+  return NULL;
+}
+
+// [[Rcpp::export]]
+const SEXP ATan(SEXP x){
+  if(isVariable(x)){
+    return Rcpp::wrap(ad_atan(Rcpp::as<variable>(x)));
+  }
+  Rcpp::stop("Unknown argument type for ATan function.");
+  return NULL;
+}
+
+// [[Rcpp::export]]
+const SEXP Cos(SEXP x){
+  if(isVariable(x)){
+    return Rcpp::wrap(ad_cos(Rcpp::as<variable>(x)));
+  }
+  Rcpp::stop("Unknown argument type for Cos function.");
+  return NULL;
+}
+
+// [[Rcpp::export]]
+const SEXP Cosh(SEXP x){
+  if(isVariable(x)){
+    return Rcpp::wrap(ad_cosh(Rcpp::as<variable>(x)));
+  }
+  Rcpp::stop("Unknown argument type for Cosh function.");
+  return NULL;
+}
+
+// [[Rcpp::export]]
+const SEXP Sin(SEXP x){
+  if(isVariable(x)){
+    return Rcpp::wrap(ad_sin(Rcpp::as<variable>(x)));
+  }
+  Rcpp::stop("Unknown argument type for Sin function.");
+  return NULL;
+}
+
+// [[Rcpp::export]]
+const SEXP Sinh(SEXP x){
+  if(isVariable(x)){
+    return Rcpp::wrap(ad_sinh(Rcpp::as<variable>(x)));
+  }
+  Rcpp::stop("Unknown argument type for Sinh function.");
+  return NULL;
+}
+
+// [[Rcpp::export]]
+const SEXP Tan(SEXP x){
+  if(isVariable(x)){
+    return Rcpp::wrap(ad_tan(Rcpp::as<variable>(x)));
+  }
+  Rcpp::stop("Unknown argument type for Tan function.");
+  return NULL;
+}
+
+// [[Rcpp::export]]
+const SEXP Tanh(SEXP x){
+  if(isVariable(x)){
+    return Rcpp::wrap(ad_tanh(Rcpp::as<variable>(x)));
+  }
+  Rcpp::stop("Unknown argument type for Tanh function.");
+  return NULL;
+}
+
+// [[Rcpp::export]]
+const SEXP Exp(SEXP x){
+  if(isVariable(x)){
+    return Rcpp::wrap(ad_exp(Rcpp::as<variable>(x)));
+  }
+  Rcpp::stop("Unknown argument type for Exp function.");
+  return NULL;
+}
+
+// [[Rcpp::export]]
+const SEXP Log(SEXP x){
+  if(isVariable(x)){
+    return Rcpp::wrap(ad_log(Rcpp::as<variable>(x)));
+  }
+  Rcpp::stop("Unknown argument type for Log function.");
+  return NULL;
+}
+
+// [[Rcpp::export]]
+const SEXP Log10(SEXP x){
+  if(isVariable(x)){
+    return Rcpp::wrap(ad_log10(Rcpp::as<variable>(x)));
+  }
+  Rcpp::stop("Unknown argument type for Log10 function.");
+  return NULL;
+}
+
+// [[Rcpp::export]]
+const SEXP Pow( SEXP a,  SEXP b){
+  if(isVariable(a) && isVariable(b)){
+    return Rcpp::wrap(powvv(Rcpp::as<variable>(a),Rcpp::as<variable>(b)));
+  }else if (isVariable(a) && Rf_isNumeric(b)){
+    return Rcpp::wrap(powvd(Rcpp::as<variable>(a),Rcpp::as<double>(b)));
+  }else if(Rf_isNumeric(a) && isVariable(b)){
+    return Rcpp::wrap(powdv(Rcpp::as<double>(a),Rcpp::as<variable>(b)));
+  }
+  Rcpp::stop("Unknown argument type for Pow function.");
+  return NULL;
+}
+
+
+// [[Rcpp::export]]
+const SEXP Add( SEXP a,  SEXP b){
+  if(isVariable(a) && isVariable(b)){
+    return Rcpp::wrap(addvv(Rcpp::as<variable>(a),Rcpp::as<variable>(b)));
+  }else if (isVariable(a) && Rf_isNumeric(b)){
+    return Rcpp::wrap(addvd(Rcpp::as<variable>(a),Rcpp::as<double>(b)));
+  }else if(Rf_isNumeric(a) && isVariable(b)){
+    return Rcpp::wrap(adddv(Rcpp::as<double>(a),Rcpp::as<variable>(b)));
+  }
+  Rcpp::stop("Unknown argument type for Pow function.");
+  return NULL;
+}
+
+// [[Rcpp::export]]
+const SEXP Sub( SEXP a,  SEXP b){
+  if(isVariable(a) && isVariable(b)){
+    return Rcpp::wrap(subvv(Rcpp::as<variable>(a),Rcpp::as<variable>(b)));
+  }else if (isVariable(a) && Rf_isNumeric(b)){
+    return Rcpp::wrap(subvd(Rcpp::as<variable>(a),Rcpp::as<double>(b)));
+  }else if(Rf_isNumeric(a) && isVariable(b)){
+    return Rcpp::wrap(subdv(Rcpp::as<double>(a),Rcpp::as<variable>(b)));
+  }
+  Rcpp::stop("Unknown argument type for Pow function.");
+  return NULL;
+}
+
+// [[Rcpp::export]]
+const SEXP Mult( SEXP a,  SEXP b){
+  if(isVariable(a) && isVariable(b)){
+    return Rcpp::wrap(multvv(Rcpp::as<variable>(a),Rcpp::as<variable>(b)));
+  }else if (isVariable(a) && Rf_isNumeric(b)){
+    return Rcpp::wrap(multvd(Rcpp::as<variable>(a),Rcpp::as<double>(b)));
+  }else if(Rf_isNumeric(a) && isVariable(b)){
+    return Rcpp::wrap(multdv(Rcpp::as<double>(a),Rcpp::as<variable>(b)));
+  }
+  Rcpp::stop("Unknown argument type for Pow function.");
+  return NULL;
+}
+
+// [[Rcpp::export]]
+const SEXP Div( SEXP a,  SEXP b){
+  if(isVariable(a) && isVariable(b)){
+    return Rcpp::wrap(divvv(Rcpp::as<variable>(a),Rcpp::as<variable>(b)));
+  }else if (isVariable(a) && Rf_isNumeric(b)){
+    return Rcpp::wrap(divvd(Rcpp::as<variable>(a),Rcpp::as<double>(b)));
+  }else if(Rf_isNumeric(a) && isVariable(b)){
+    return Rcpp::wrap(divdv(Rcpp::as<double>(a),Rcpp::as<variable>(b)));
+  }
+  Rcpp::stop("Unknown argument type for Pow function.");
+  return NULL;
 }
 
 #endif /* RINTERFACE_HPP */

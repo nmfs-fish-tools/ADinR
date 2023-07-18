@@ -10,7 +10,7 @@
  *
  *
  * This File is part of the NOAA, National Marine Fisheries Service
- * Automatic Differntiation in R project.
+ * Automatic Differentiation in R project.
  *
  * This software is a "United States Government Work" under the terms of the
  * United States Copyright Act.  It was written as part of the author's official
@@ -116,11 +116,17 @@ struct variable_info {
     double maxb;
     bool is_bound = false;
     bool is_nonlinear = false;
+    bool independent = false;
     
     variable_info() :
     id(variable_info::id_g++), value(0) {
         
     }
+    
+    variable_info(const  variable_info& other) :
+      id(other.id), value(other.value){
+      
+    } 
     
     double internal_value() {
         if (this->is_bound) {

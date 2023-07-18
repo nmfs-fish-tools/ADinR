@@ -11,7 +11,7 @@
  * 
  *
  * This File is part of the NOAA, National Marine Fisheries Service
- * Automatic Differntiation in R project.
+ * Automatic Differentiation in R project.
  *
  * This software is a "United States Government Work" under the terms of the
  * United States Copyright Act.  It was written as part of the author's official

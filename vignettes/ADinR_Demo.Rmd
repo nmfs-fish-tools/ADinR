@@ -8,8 +8,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## Automatic Diferentiation in R
-
-This is an R Markdown format used for publishing markdown documents to GitHub. When you click the **Knit** button all R code chunks are run and a markdown file (.md) suitable for publishing to GitHub is generated.
+ADinR is a package that provides reverse-mode automatic differentiation in R.
 
 ## Including Code
 
@@ -19,7 +18,7 @@ You can include R code in the document as follows:
 library(ADinR)
 ```
 
-## Including Plots
+## Defining Parameters
 
 You can also embed plots, for example:
 
@@ -30,3 +29,12 @@ adinr<-Rcpp::Module("adinr", PACKAGE="ADinR")
 ```
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+## Recording Expressions
+
+
+## Minimizing a Function
+
+
+
+## Fitting a Model
