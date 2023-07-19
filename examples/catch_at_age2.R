@@ -81,24 +81,30 @@ index<-make_variable_list(nyrs)
 
 #ESTIMATED PARAMETERS
 R0<-Parameter()
-R0$set_value(om_input[["R0"]])
+R0$set_value(1e+05)#om_input[["R0"]])
 h<-om_input[["h"]]
-
+devs<-make_parameter_list(nyrs)
+for(i in 1:nyrs){
+  devs[[i]]$set_value(0.1)
+  # f[[i]]$bounds(0.1,10.0)
+}
 #fleet selectivity
 fleet.A50.sel<-Parameter()
-fleet.A50.sel$set_value(om_input[["sel_fleet"]][["fleet1"]][["A50.sel"]])
+fleet.A50.sel$set_value(1.5)#om_input[["sel_fleet"]][["fleet1"]][["A50.sel"]])
+fleet.A50.sel$bounds(0.1,12.0)
 fleet.slope.sel<-Parameter()
-fleet.slope.sel$set_value(om_input[["sel_fleet"]][["fleet1"]][["slope.sel"]])
-
+fleet.slope.sel$set_value(.5)#om_input[["sel_fleet"]][["fleet1"]][["slope.sel"]])
+fleet.slope.sel$bounds(.1,1.0)
 #survey selectivity
-survey.A50.sel<-Parameter()
-survey.A50.sel$set_value(om_input[["sel_survey"]][["survey1"]][["A50.sel"]])
-survey.slope.sel<-Parameter()
-survey.slope.sel$set_value(om_input[["sel_survey"]][["survey1"]][["slope.sel"]])
+# survey.A50.sel<-Parameter()
+# survey.A50.sel$set_value(om_input[["sel_survey"]][["survey1"]][["A50.sel"]])
+# survey.slope.sel<-Parameter()
+# survey.slope.sel$set_value(om_input[["sel_survey"]][["survey1"]][["slope.sel"]])
 
-f<-make_parameter_list(nyrs)
+f<-make_variable_list(nyrs)
 for(i in 1:nyrs){
   f[[i]]$set_value(0.1)
+  f[[i]]$bounds(0.1,10.0)
 }
 
 
@@ -128,7 +134,7 @@ for(a in 1:(nages)){
 R.eq=R0*(1.0+log(Phi.F/Phi.0)/h)/(Phi.F/Phi.0)
 
 for(a in 1:nages){
-  N.age[[1]][[a]]=R.eq*N.pr1[[a]]
+  N.age[[1]][[a]]<- N.age[[1]][[a]]+R.eq*N.pr1[[a]]
 }
 
 for(y in 1:(nyrs-1)){
@@ -140,7 +146,7 @@ for(y in 1:(nyrs-1)){
     SSB[[y]]<- SSB[[y]] + N.age[[y]][[a]]*reprod[[a]]
     
   }
-  recruits<-(0.8*R0*h* SSB[[y]])/(0.2*R0*Phi.0*(1-h) +  SSB[[y]]*(h-0.2))
+  recruits<-(0.8*R0*h* SSB[[y]])/(0.2*R0*Phi.0*(1-h) +  SSB[[y]]*(h-0.2)) + devs[[y+1]]
   N.age[[y+1]][[1]]<-recruits
   
   
@@ -198,6 +204,10 @@ cv<-em_input[["cv.L"]][["fleet1"]]
 for(i in 1:nyrs){
   obs<-L.obs[[i]]
   predicted<-L.knum[[i]]
+  cat(obs<-L.obs[[i]])
+  cat(" ")
+  cat(predicted$value())
+  cat("\n")
   nll1<-nll1+(-1.0*log(cv)-0.5*pow(((log(obs) - log(predicted))/predicted),2.0))
 }
 
@@ -210,14 +220,21 @@ for(i in 1:nyrs){
   for(j in 1:nages){
     index<- ((i-1)*nages+j)#dimension folded
     predicted<-prop.age[[i]][[j]]
+    # cat("[")
+    # cat(prop.age[[i]][[j]]$value())
+    # cat(",")
+    # cat(obs.prop[[index]])
+    # cat("] ")
     p<-p + obs.prop[[index]]*log(predicted)
   }
+  # cat("\n")
   nll2<-nll2+sample_size*p
   
 }
 
 nll<-nll1+nll2
 
+#stop recording
 SetRecording(FALSE)
 
 results<-Minimize()
