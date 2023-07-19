@@ -33,6 +33,10 @@ SetRecording <- function(record) {
     invisible(.Call(`_ADinR_SetRecording`, record))
 }
 
+Minimize <- function(control = NULL) {
+    .Call(`_ADinR_Minimize`, control)
+}
+
 ACos <- function(x) {
     .Call(`_ADinR_ACos`, x)
 }

@@ -795,6 +795,11 @@ void SetRecording(bool record){
 }
 
 // [[Rcpp::export]]
+Rcpp::List Minimize(Rcpp::Nullable<Rcpp::List> control = R_NilValue){
+  return lbfgs(control);
+}
+
+// [[Rcpp::export]]
 const SEXP ACos(const SEXP& x){
   if(isVariable(x)){
     variable v = ad_acos(Rcpp::as<variable>(x));

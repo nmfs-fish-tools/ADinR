@@ -90,6 +90,17 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
+// Minimize
+Rcpp::List Minimize(Rcpp::Nullable<Rcpp::List> control);
+RcppExport SEXP _ADinR_Minimize(SEXP controlSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::List> >::type control(controlSEXP);
+    rcpp_result_gen = Rcpp::wrap(Minimize(control));
+    return rcpp_result_gen;
+END_RCPP
+}
 // ACos
 const SEXP ACos(const SEXP& x);
 RcppExport SEXP _ADinR_ACos(SEXP xSEXP) {
@@ -294,6 +305,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_ADinR_Gradient", (DL_FUNC) &_ADinR_Gradient, 1},
     {"_ADinR_Clear", (DL_FUNC) &_ADinR_Clear, 0},
     {"_ADinR_SetRecording", (DL_FUNC) &_ADinR_SetRecording, 1},
+    {"_ADinR_Minimize", (DL_FUNC) &_ADinR_Minimize, 1},
     {"_ADinR_ACos", (DL_FUNC) &_ADinR_ACos, 1},
     {"_ADinR_ASin", (DL_FUNC) &_ADinR_ASin, 1},
     {"_ADinR_ATan", (DL_FUNC) &_ADinR_ATan, 1},
