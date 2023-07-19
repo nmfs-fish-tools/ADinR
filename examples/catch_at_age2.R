@@ -196,7 +196,6 @@ nll2<-Variable()
 #calculate catch likelihood
 cv<-em_input[["cv.L"]][["fleet1"]]
 for(i in 1:nyrs){
-  print(i)
   obs<-L.obs[[i]]
   predicted<-L.knum[[i]]
   nll1<-nll1+(-1.0*log(cv)-0.5*pow(((log(obs) - log(predicted))/predicted),2.0))
@@ -210,7 +209,6 @@ for(i in 1:nyrs){
   p<-Variable()
   for(j in 1:nages){
     index<- ((i-1)*nages+j)#dimension folded
-    print(index)
     predicted<-prop.age[[i]][[j]]
     p<-p + obs.prop[[index]]*log(predicted)
   }
